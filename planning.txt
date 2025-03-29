@@ -1,0 +1,3 @@
+28th of March, 2025
+
+The goal here is to make a text based game, but we're going to use Interactive Fiction as our base. First, we want to navigate rooms like normal, but we want the description to stay on the page. Let's start be creating locations, the ability to move between them, and descriptions for each room which will stay on the page.

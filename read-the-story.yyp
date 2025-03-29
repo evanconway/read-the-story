@@ -18,6 +18,7 @@
   },
   "name":"read-the-story",
   "resources":[
+    {"id":{"name":"obj_app","path":"objects/obj_app/obj_app.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
   ],
   "resourceType":"GMProject",
