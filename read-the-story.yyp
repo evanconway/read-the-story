@@ -18,8 +18,11 @@
   },
   "name":"read-the-story",
   "resources":[
+    {"id":{"name":"fnt_default","path":"fonts/fnt_default/fnt_default.yy",},},
     {"id":{"name":"obj_app","path":"objects/obj_app/obj_app.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"id":{"name":"build_world","path":"scripts/build_world/build_world.yy",},},
+    {"id":{"name":"Location","path":"scripts/Location/Location.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
