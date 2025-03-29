@@ -1,3 +1,11 @@
 28th of March, 2025
 
 The goal here is to make a text based game, but we're going to use Interactive Fiction as our base. First, we want to navigate rooms like normal, but we want the description to stay on the page. Let's start be creating locations, the ability to move between them, and descriptions for each room which will stay on the page.
+
+Just realized we need to think through how direction works. First, I really want this game to work with controller. IF games use a cardinal direciton system. It's very tempting to steal this, but I liked the idea of having more flexibility in my system. For example, what if we wanted to parallel hallways leading north from a room? Basically two NORTH exits? In this was a keyboard IF game we could just demand a specific prompt from the player. But if this needs to work with controller then we can't type specific text. Maybe we just add sub-connections on the same cardinal direction, and we ask the player which one they meant if there's more than one?
+
+Maybe it's better to not overthink this. Let's hard to commit to the 4 cardinal directions and the intercardinal directions, as well as up and down. It's simple. The 8 cardinal directions already work on any directional input device, and I'm sure we can figure something out for up and down. So doing this, we need to specify the type of direction for any given connection in a location.
+
+This is a smart idea because it will standardize movement throughout the world. And gives us a way to start planning how to implement controls for both controller and keyboard/mouse.
+
+Let's steal the compass idea from that other game. With that, it was very easy to determine where we could from any location.
