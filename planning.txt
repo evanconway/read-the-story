@@ -8,4 +8,4 @@ Maybe it's better to not overthink this. Let's hard to commit to the 4 cardinal 
 
 This is a smart idea because it will standardize movement throughout the world. And gives us a way to start planning how to implement controls for both controller and keyboard/mouse.
 
-Let's steal the compass idea from that other game. With that, it was very easy to determine where we could from any location.
+Let's steal the compass idea from that other game. With that, it was very easy to determine where we could go from any location. We should also steal the map. That was extremely useful, and helped make the world feel more real. There may not be enough space on screen for regular text and the map. We'll have to reflect on how we want this implemented.
