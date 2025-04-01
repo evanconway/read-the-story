@@ -9,3 +9,32 @@ Maybe it's better to not overthink this. Let's hard to commit to the 4 cardinal 
 This is a smart idea because it will standardize movement throughout the world. And gives us a way to start planning how to implement controls for both controller and keyboard/mouse.
 
 Let's steal the compass idea from that other game. With that, it was very easy to determine where we could go from any location. We should also steal the map. That was extremely useful, and helped make the world feel more real. There may not be enough space on screen for regular text and the map. We'll have to reflect on how we want this implemented.
+
+
+31st of March, 2025
+
+Did some more thinking about actions. If we want this to be playable with a controller it needs to be easy to select between a variety of abilities and targets for those abilities. Like a modern 3D adventure game, I'm thinking we can streamline this by only having 4-5 actions, kinda like buttons on a controller. They'll probably be:
+
+examine
+talk
+attack
+interact
+
+Maybe some others depending on game mechanics we can think of. Also, I think the types of targets could be simplified. Basically just:
+
+NPCs
+enemies
+objects
+exits
+
+I was thinking the top half of the screen could be devoted to just the room description. Then the bottom have could be divided in columns each containing a list of those targets I mentioned above. A hotkey/button could be assigns to each column, and using a direction input chooses from those targets. After selecting a target, a popup menu of possible actions could appear. I suppose if we did it that way, we could have any number of actions for a given target.
+
+Exits could be a separate pop-up menu instead of its own column. Perhaps we always show the compass, and descriptions of the exits. But when you hit a button, a travel hotkey of some kind, the compass becomes highlighted and now you can choose a direction on the compass to travel.
+
+I suppose we could also implement mouse support so mouse users can just click on these things.
+
+In traditional IF games you can just type what you want to do, and I think the parsers are smart enough to figure out the target and action in one swoop. And in those games I suppose the commands can be more complex than a simple "target" -> "action". So for this game I guess the challenge is how to make it intiutive to interact with targets in the description.
+
+Will the game be too easy if all interactable game objects are just listed for the player undert "target" columns? Maybe, but I don't think I can know for sure until I try.
+
+Also just realized we could easily put a description for each item in unused screen space when we highlight it. Or maybe we want examining an object to be a deliberate action? Something to explore.
