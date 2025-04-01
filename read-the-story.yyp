@@ -22,6 +22,7 @@
     {"id":{"name":"obj_app","path":"objects/obj_app/obj_app.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"build_world","path":"scripts/build_world/build_world.yy",},},
+    {"id":{"name":"draw_text_box","path":"scripts/draw_text_box/draw_text_box.yy",},},
     {"id":{"name":"Location","path":"scripts/Location/Location.yy",},},
   ],
   "resourceType":"GMProject",

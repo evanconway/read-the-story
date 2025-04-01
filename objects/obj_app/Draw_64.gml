@@ -6,7 +6,15 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_top);
 draw_text(display_get_gui_width() / 2, 20, location.name);
 
-draw_text_ext(display_get_gui_width() / 2, 70, location.description, string_height("A"), 800);
+var description_width = display_get_gui_width() * 0.65;
+var description_height = display_get_gui_height() * 0.4;
+draw_text_box(
+	display_get_gui_width() / 2 - description_width / 2,
+	display_get_gui_height() * 0.1,
+	location.description,
+	description_width,
+	description_height
+);
 
 var travel_x = 0;
 var travel_y = 0;
