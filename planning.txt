@@ -38,3 +38,5 @@ In traditional IF games you can just type what you want to do, and I think the p
 Will the game be too easy if all interactable game objects are just listed for the player undert "target" columns? Maybe, but I don't think I can know for sure until I try.
 
 Also just realized we could easily put a description for each item in unused screen space when we highlight it. Or maybe we want examining an object to be a deliberate action? Something to explore.
+
+Also making a note that, although I've already stated I want this to be playable with controller, I'd also like it to be playable on arcade stick. Partly because I think that'd be cool, but also it forces us to keep the control scheme so simple that it could work with any modern controller. It could maybe even work on a retro-gaming emulation device which usually only has a d-pad and 4 face buttons.
