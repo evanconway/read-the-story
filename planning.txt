@@ -40,3 +40,9 @@ Will the game be too easy if all interactable game objects are just listed for t
 Also just realized we could easily put a description for each item in unused screen space when we highlight it. Or maybe we want examining an object to be a deliberate action? Something to explore.
 
 Also making a note that, although I've already stated I want this to be playable with controller, I'd also like it to be playable on arcade stick. Partly because I think that'd be cool, but also it forces us to keep the control scheme so simple that it could work with any modern controller. It could maybe even work on a retro-gaming emulation device which usually only has a d-pad and 4 face buttons.
+
+After doing some more reflecting, I think it's too hard to make up a plan for all of this in my head. Let's try adding some basic items to the rooms that we can examine. We'll play around with the controls for moving between rooms as well. I think if we can get moving between rooms and examining items to feel natural, then we're on the right path.
+
+Actually, no, we have to think through how we want interacting with travel options and objects to work. Right now I just have it rigged to read arrow key inputs and change room on space press. But we're going to use those same arrow keys for selecting objects. Ah, perhaps we'll start with using our hotkey idea from earlier, where you choose a travel or targets menu first. I'm torn on how we should layout the travel options. I really like the idea of maintaining the compass layout but I can tell I'm unsure how that will work with selecting the options. So maybe we'll just use a list layout for now.
+
+Maybe if instead of using a hotkey system, we simply list "travel" as option in addition to the targets in the room? Actually, we could have both. Let's try just listing travel as an option. Also let's just call it "move" from here on.
