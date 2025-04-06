@@ -16,27 +16,48 @@ draw_text_box(
 	location.description
 );
 
-var travel_x = 0;
-var travel_y = 0;
-if (keyboard_check(vk_up)) travel_y -= 1;
-if (keyboard_check(vk_down)) travel_y += 1;
-if (keyboard_check(vk_left)) travel_x -= 1;
-if (keyboard_check(vk_right)) travel_x += 1;
-
-var travel_dir = -1;
-if (travel_x = 1 && travel_y = 0) travel_dir = LOCATION_CONNECTION_DIR.EAST;
-if (travel_x = 1 && travel_y = -1) travel_dir = LOCATION_CONNECTION_DIR.NORTHEAST;
-if (travel_x = 0 && travel_y = -1) travel_dir = LOCATION_CONNECTION_DIR.NORTH;
-if (travel_x = -1 && travel_y = -1) travel_dir = LOCATION_CONNECTION_DIR.NORTHWEST;
-if (travel_x = -1 && travel_y = 0) travel_dir = LOCATION_CONNECTION_DIR.WEST;
-if (travel_x = -1 && travel_y = 1) travel_dir = LOCATION_CONNECTION_DIR.SOUTHWEST;
-if (travel_x = 0 && travel_y = 1) travel_dir = LOCATION_CONNECTION_DIR.SOUTH;
-if (travel_x = 1 && travel_y = 1) travel_dir = LOCATION_CONNECTION_DIR.SOUTHEAST;
-
-var connections = ds_map_keys_to_array(global.location_connections[$ location.name]);
-
-if (array_contains(connections, travel_dir) && keyboard_check_pressed(vk_space)) {
-	location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], travel_dir)];
+if (mode == MODE.TARGET) {
+	
+}
+if (mode == MODE.MOVE) {
+	var connections = ds_map_keys_to_array(global.location_connections[$ location.name]);
+	
+	var move_v = 0;
+	var move_h = 0;
+	if (keyboard_check_pressed(vk_up)) move_v -= 1;
+	if (keyboard_check_pressed(vk_down)) move_v += 1;
+	if (keyboard_check_pressed(vk_left)) move_h -= 1;
+	if (keyboard_check_pressed(vk_right)) move_h += 1;
+	var new_y = movement_choice[0] + move_v;
+	var new_x = movement_choice[1] + move_h;
+	var new_y_valid = new_y >= 0 && new_y < array_length(movement_options_grid);
+	var new_x_valid = new_x >= 0 && new_y_valid && new_x < array_length(movement_options_grid[new_y]);
+	
+	var movement_is_valid = method(
+		{
+			new_y_valid,
+			new_x_valid,
+			new_y, new_x,
+			movement_options_grid,
+		},
+		function() {
+			if (!new_y_valid) return false;
+			if (!new_x_valid) return false;
+			var new_move_dir = movement_options_grid[new_y][new_x];
+			if (new_move_dir == -1) return false;
+			return true;
+		}
+	);
+	
+	if (movement_is_valid()) {
+		movement_choice = [new_y, new_x];
+	}
+	
+	var move_dir = movement_options_grid[movement_choice[0]][movement_choice[1]];
+	if (keyboard_check_pressed(vk_space) && array_contains(connections, move_dir)) {
+		location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], move_dir)];
+		movement_choice = movement_center;
+	}
 }
 
-draw_compass(connections, travel_dir);
+movement_draw_options(0, gui_height * 0.6, location, movement_options_grid, movement_choice);

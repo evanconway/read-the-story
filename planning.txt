@@ -55,3 +55,5 @@ Just looked back over notes. I forgot we decided to list "move" as an option by 
 Let's start thinking of the game in terms of different menus. And right now I can think of 2. There's the regular targets menu, when you can choose targets within a location like objects, characters, or enemies. And we'll have the movement menu where you can choose directions to move within a location. We could assign hotkeys/buttons that bring up these different menus. Also for the movement menu, I think we should layout the options like a compass, we'll put some sort of null option for directions that can't be selected. This gives us an elegant way to select everything, including up/down.
 
 Let's try adding that menu first.
+
+It occured to me I've lost site of the mini-map. I think we need to keep that otherwise it's too easy to lose track of where you are physically in the story. But for now, let's have the move menu in the bottom left where we used to have the compass. It basically is the compass, just a slightly different thing. So it will always be visible, you just can't interact with it until you select that menu with the hotkey.
