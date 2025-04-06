@@ -30,7 +30,7 @@ function movement_draw_options(
 				drawn_name = "";
 			}
 			draw_set_color(c_white);
-			if (choice[0] == i && choice[1] == k) {
+			if (array_length(choice) == 2 && choice[0] == i && choice[1] == k) {
 				draw_set_color(c_lime);
 			}
 			draw_text_ext(draw_x, draw_y, drawn_name, text_height, text_width);

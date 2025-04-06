@@ -5,7 +5,7 @@ enum MODE {
 	MOVE,
 }
 
-mode = MODE.MOVE;
+mode = MODE.TARGET;
 
 // -1 is no option, -2 is the center
 movement_options_grid = [
