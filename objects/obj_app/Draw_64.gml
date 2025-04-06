@@ -6,14 +6,14 @@ draw_set_halign(fa_center);
 draw_set_valign(fa_top);
 draw_text(display_get_gui_width() / 2, 20, location.name);
 
-var description_width = display_get_gui_width() * 0.65;
-var description_height = display_get_gui_height() * 0.4;
+var gui_width = display_get_gui_width();
+var gui_height = display_get_gui_height();
 draw_text_box(
-	display_get_gui_width() / 2 - description_width / 2,
-	display_get_gui_height() * 0.1,
-	location.description,
-	description_width,
-	description_height
+	gui_width * 0.2,
+	gui_height * 0.1,
+	gui_width * 0.8,
+	gui_height * 0.55,
+	location.description
 );
 
 var travel_x = 0;
