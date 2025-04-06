@@ -20,18 +20,30 @@ function movement_draw_options(
 	var text_height = string_height("A");
 	var cell_width = text_width * 1.05;
 	var cell_height = text_height * 2.1;
-	var draw_y = y + cell_height / 2;
+	
+	var movement_options_width = 0;
+	var movement_options_height = 0;
 	for (var i = 0; i < array_length(grid); i++) {
-		var draw_x = x + cell_width / 2;
+		movement_options_height += cell_height;
+		var acc_option_widths = 0;
+		for (var k = 0; k < array_length(grid[i]); k++) {
+			acc_option_widths += cell_width
+		}
+		movement_options_width = max(movement_options_width, acc_option_widths);
+	}
+	
+	var draw_y = y - (movement_options_height / 2) + cell_height / 2;
+	for (var i = 0; i < array_length(grid); i++) {
+		var draw_x = x - (movement_options_width / 2) + cell_width / 2;
 		for (var k = 0; k < array_length(grid[i]); k++) {
 			var location_name = ds_map_find_value(connections, grid[i][k]);
 			var drawn_name = is_undefined(location_name) ? "-" : location_name;
 			if (grid[i][k] == -1) {
 				drawn_name = "";
 			}
-			draw_set_color(c_white);
+			draw_set_color(c_dkgray);
 			if (array_length(choice) == 2 && choice[0] == i && choice[1] == k) {
-				draw_set_color(c_lime);
+				draw_set_color(c_white);
 			}
 			draw_text_ext(draw_x, draw_y, drawn_name, text_height, text_width);
 			draw_x += cell_width;

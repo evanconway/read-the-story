@@ -17,6 +17,10 @@ draw_text_box(
 	location.description
 );
 
+if (keyboard_check_pressed(ord("F"))) {
+	window_set_fullscreen(!window_get_fullscreen());
+}
+
 if (keyboard_check_pressed(ord("M"))) {
 	mode = MODE.MOVE;
 	movement_choice = movement_center;
@@ -67,13 +71,13 @@ if (mode == MODE.MOVE) {
 		location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], move_dir)];
 		movement_choice = movement_center;
 		mode = MODE.TARGET;
+	} else {
+		movement_draw_options(
+			gui_width / 2,
+			gui_height * 0.8,
+			location,
+			movement_options_grid,
+			mode == MODE.MOVE ? movement_choice : []
+		);
 	}
 }
-
-movement_draw_options(
-	0,
-	gui_height * 0.6,
-	location,
-	movement_options_grid,
-	mode == MODE.MOVE ? movement_choice : []
-);
