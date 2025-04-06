@@ -46,3 +46,12 @@ After doing some more reflecting, I think it's too hard to make up a plan for al
 Actually, no, we have to think through how we want interacting with travel options and objects to work. Right now I just have it rigged to read arrow key inputs and change room on space press. But we're going to use those same arrow keys for selecting objects. Ah, perhaps we'll start with using our hotkey idea from earlier, where you choose a travel or targets menu first. I'm torn on how we should layout the travel options. I really like the idea of maintaining the compass layout but I can tell I'm unsure how that will work with selecting the options. So maybe we'll just use a list layout for now.
 
 Maybe if instead of using a hotkey system, we simply list "travel" as option in addition to the targets in the room? Actually, we could have both. Let's try just listing travel as an option. Also let's just call it "move" from here on.
+
+
+6th of April, 2025
+
+Just looked back over notes. I forgot we decided to list "move" as an option by default just like other items in the room. Or I should say "targets" in the room. Things that can be interacted with. I think I only said this because I'm not 100% sure what I want yet. And just making it a regular option gives us a way to keep moving forward to code. On reflection I don't think this will work well because movement is something separate from interacting with targets. It's kind of its own game mechanic.
+
+Let's start thinking of the game in terms of different menus. And right now I can think of 2. There's the regular targets menu, when you can choose targets within a location like objects, characters, or enemies. And we'll have the movement menu where you can choose directions to move within a location. We could assign hotkeys/buttons that bring up these different menus. Also for the movement menu, I think we should layout the options like a compass, we'll put some sort of null option for directions that can't be selected. This gives us an elegant way to select everything, including up/down.
+
+Let's try adding that menu first.

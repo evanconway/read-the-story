@@ -39,4 +39,4 @@ if (array_contains(connections, travel_dir) && keyboard_check_pressed(vk_space))
 	location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], travel_dir)];
 }
 
-draw_compass(connections, travel_dir)
+draw_compass(connections, travel_dir);
