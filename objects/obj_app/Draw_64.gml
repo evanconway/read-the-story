@@ -8,10 +8,11 @@ draw_text(display_get_gui_width() / 2, 20, location.name);
 
 var gui_width = display_get_gui_width();
 var gui_height = display_get_gui_height();
+var description_width_pad = 0.3;
 draw_text_box(
-	gui_width * 0.2,
+	gui_width * description_width_pad,
 	gui_height * 0.1,
-	gui_width * 0.8,
+	gui_width * (1 - description_width_pad),
 	gui_height * 0.55,
 	location.description
 );
@@ -54,7 +55,7 @@ if (mode == MODE.MOVE) {
 	}
 	
 	var move_dir = movement_options_grid[movement_choice[0]][movement_choice[1]];
-	if (keyboard_check_pressed(vk_space) && array_contains(connections, move_dir)) {
+	if (keyboard_check_pressed(vk_enter) && array_contains(connections, move_dir)) {
 		location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], move_dir)];
 		movement_choice = movement_center;
 	}

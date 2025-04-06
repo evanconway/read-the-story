@@ -30,13 +30,13 @@ function draw_text_box(x1, y1, x2, y2, text) {
 	
 	var text_y = y1 + border + padding;
 	if (draw_get_valign() == fa_middle) {
-		text_y = y1 + (width / 2);
+		text_y = y1 + (height / 2);
 	}
 	if (draw_get_valign() == fa_bottom) {
-		text_y = y1 + width - border - padding;
+		text_y = y1 + height - border - padding;
 	}
 	
 	draw_set_color(c_white);
 	draw_set_font(fnt_default);
-	draw_text_ext(text_x, text_y, text, string_height("A"), width);
+	draw_text_ext(text_x, text_y, text, string_height("A"), text_width);
 }
