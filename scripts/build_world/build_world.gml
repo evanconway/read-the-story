@@ -10,7 +10,7 @@ function build_world() {
 	
 	var ice_cavern = location_create("Ice Cavern", "Your breathe turns to mist. The walls shimmer with a cold blue. Your breathe turns to mist. The walls shimmer with a cold blue. Your breathe turns to mist. The walls shimmer with a cold blue.");
 	target_set_location(target_create("floor", "It's slightly slipper, but not too much to stand and walk on.").target_id, ice_cavern);
-	target_set_location(target_create("peculiar spike", "In a corner one ice spike rises higher than expecting. There's a purple tint in the middle.").target_id, ice_cavern);
+	target_set_location(target_create("peculiar spike", "In a corner one ice spike rises higher than expected. There's a purple tint in the middle.").target_id, ice_cavern);
 	
 	var fire_pit = location_create("Fire Pit", "Besides being unbearably hot, your feet burn from the heated sand. Besides being unbearably hot, your feet burn from the heated sand. Besides being unbearably hot, your feet burn from the heated sand.");
 	target_set_location(target_create("sand", "A dark yellow color. Hot as fire.").target_id, fire_pit);
