@@ -1,6 +1,8 @@
 if (keyboard_check_pressed(ord("F"))) {
 	window_set_fullscreen(!window_get_fullscreen());
-} else if (keyboard_check_pressed(ord("M"))) {
+}
+
+if (keyboard_check_pressed(ord("M"))) {
 	mode = MODE.MOVE;
 	movement_choice = movement_center;
 } else if (keyboard_check_pressed(vk_backspace) || keyboard_check_pressed(vk_escape)) {
