@@ -19,20 +19,29 @@ draw_text_box(
 
 if (keyboard_check_pressed(ord("F"))) {
 	window_set_fullscreen(!window_get_fullscreen());
-}
-
-if (keyboard_check_pressed(ord("M"))) {
+} else if (keyboard_check_pressed(ord("M"))) {
 	mode = MODE.MOVE;
 	movement_choice = movement_center;
-}
-if (keyboard_check_pressed(vk_backspace) || keyboard_check_pressed(vk_escape)) {
+} else if (keyboard_check_pressed(vk_backspace) || keyboard_check_pressed(vk_escape)) {
 	mode = MODE.TARGET;
-}
-
-if (mode == MODE.TARGET) {
-	
-}
-if (mode == MODE.MOVE) {
+} else if (mode == MODE.TARGET) {
+	var targets = location_get_targets(location.name);
+	var move_v = 0;
+	if (keyboard_check_pressed(vk_up)) move_v -= 1;
+	if (keyboard_check_pressed(vk_down)) move_v += 1;
+	target_choice = clamp(target_choice + move_v, 0, array_length(targets) - 1);
+	targets_menu_draw(gui_width / 2, gui_height * 0.7, targets, target_choice);
+	if (keyboard_check_pressed(vk_enter)) {
+		mode = MODE.EXAMINE;
+	}
+} else if (mode == MODE.EXAMINE) {
+	var target = location_get_targets(location.name)[target_choice];
+	draw_set_valign(fa_middle);
+	draw_set_halign(fa_center);
+	draw_set_font(fnt_default);
+	draw_set_color(c_white);
+	draw_text(gui_width / 2, gui_height * 0.7, target.description);
+} else if (mode == MODE.MOVE) {
 	var connections = ds_map_keys_to_array(global.location_connections[$ location.name]);
 	
 	var move_v = 0;
@@ -71,6 +80,7 @@ if (mode == MODE.MOVE) {
 		location = global.locations[$ ds_map_find_value(global.location_connections[$ location.name], move_dir)];
 		movement_choice = movement_center;
 		mode = MODE.TARGET;
+		target_choice = 0;
 	} else {
 		movement_draw_options(
 			gui_width / 2,

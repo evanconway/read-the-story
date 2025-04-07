@@ -50,16 +50,21 @@ global.location_connections = {};
  * @param {string} name the name of locations must be unique
  * @param {string} description the default description of this location
  */
-function location_create (name, description = "no description") {
+function location_create(name, description = "no description") {
 	var location = {
 		name,
 		description,
+		targets: [],
 	};
 	struct_set(global.locations, name, location);
 	return name;
 }
 
 /**
+ * @param {string} name_a the location to receive the connection
+ * @param {string} name_b the location connecting to
+ * @param {real} connection_direction the direction that should be moved to get from a to b
+ * @param {bool} add_reverse connect location name_b back to name_a
  */
 function location_add_connection(name_a, name_b, connection_direction, add_reverse = true) {
 	if (!struct_exists(global.location_connections, name_a)) {
@@ -76,3 +81,10 @@ function location_add_connection(name_a, name_b, connection_direction, add_rever
 		location_add_connection(name_b, name_a, __get_reverse_location_connection_dir(connection_direction), false);
 	}
 };
+
+function location_get_targets(location_name) {
+	var targets = ds_map_values_to_array(global.targets);
+	return array_filter(targets, method({ location_name }, function(target) {
+		return target_get_location(target.target_id) == location_name;
+	}));
+}

@@ -26,6 +26,7 @@
     {"id":{"name":"draw_text_box","path":"scripts/draw_text_box/draw_text_box.yy",},},
     {"id":{"name":"Location","path":"scripts/Location/Location.yy",},},
     {"id":{"name":"movement","path":"scripts/movement/movement.yy",},},
+    {"id":{"name":"Target","path":"scripts/Target/Target.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

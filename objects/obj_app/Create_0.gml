@@ -3,6 +3,7 @@ location = build_world();
 enum MODE {
 	TARGET,
 	MOVE,
+	EXAMINE,
 }
 
 mode = MODE.TARGET;
@@ -17,3 +18,5 @@ movement_options_grid = [
 ];
 movement_center = [2, 1]
 movement_choice = movement_center;
+
+target_choice = 0;

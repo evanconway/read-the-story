@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Target",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Target",
+  "parent":{
+    "name":"read-the-story",
+    "path":"read-the-story.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

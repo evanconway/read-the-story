@@ -57,3 +57,13 @@ Let's start thinking of the game in terms of different menus. And right now I ca
 Let's try adding that menu first.
 
 It occured to me I've lost site of the mini-map. I think we need to keep that otherwise it's too easy to lose track of where you are physically in the story. But for now, let's have the move menu in the bottom left where we used to have the compass. It basically is the compass, just a slightly different thing. So it will always be visible, you just can't interact with it until you select that menu with the hotkey.
+
+I've got a movement menu now. I decided to only make it visible when in move mode. I'm not convinced I like the layout yet but we'll go with it for now. Next we should add targets within the room that can be examined.
+
+I've decided I'd like to list targets, and then list options for targets after they've been selected. This is instead of doing something where you choose the action you want to perform first, then the target. Are we sacrificing gameplay creativity here? For example what if we wanted the player to try and "talk" to an inanimate object? I suppose we are, but ultimately any decision we make probably has a tradeoff. In this case I think selecting target then action is more intuitive and is worth it. 
+
+I've been very focused on a game that will work with controllers. But perhaps in the future we can make a text game that relies on keyboard excusively. This would open up all kinds of control and creativity options. Or maybe we'll change our minds about how this game works partway through. It shouldn't be too hard a change since this whole system will rely on action -> target interactions.
+
+Anyway, let's try adding items to the rooms which can be selected from the targets menu. We'll consider this to be "examining" the item. When this happens we'll display the examination description of the item. The user will have to press "back" to get back to the targets menu. I think we'll also display action options for the target here as well, but I'm not sure what those are yet, so we'll stick to just displaying the examination description.
+
+We should probably change the name of "target" to "interactable" or something similar. Target isn't quite the right name.
