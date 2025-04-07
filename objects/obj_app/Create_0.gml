@@ -1,3 +1,5 @@
+updateable = game_mode_get_targets();
+
 location = build_world();
 
 enum MODE {
