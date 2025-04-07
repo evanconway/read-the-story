@@ -32,7 +32,6 @@ function target_get_location(target_id) {
 	return ds_map_find_value(global.target_locations, target_id);
 }
 
-
 function targets_menu_draw(x, y, targets, choice) {
 	draw_set_halign(fa_center);
 	draw_set_valign(fa_middle);

@@ -67,3 +67,19 @@ I've been very focused on a game that will work with controllers. But perhaps in
 Anyway, let's try adding items to the rooms which can be selected from the targets menu. We'll consider this to be "examining" the item. When this happens we'll display the examination description of the item. The user will have to press "back" to get back to the targets menu. I think we'll also display action options for the target here as well, but I'm not sure what those are yet, so we'll stick to just displaying the examination description.
 
 We should probably change the name of "target" to "interactable" or something similar. Target isn't quite the right name.
+
+Got a simple system going. But it's clear we'll need to think through targets more completely before going too far. These are how we'll interact with the entire game world. We haven't even thought about inventory yet. How does something like picking up a key and using it to unlock a chest in another room work? Should targets being something that can exist in a location as well as the player inventory? Do we have a traditional inventory?
+
+Like so many things, let's just assume we have a traditional game inventory so we can keep moving forward. And we'll assume it's magical in the sense that it's not an explicit backpack or pouch on the player character. It just magically exists like in most games.
+
+Actually, I think we can simple create the location "inventory" and leave it at that. We don't have to create this location in the game world. Targets already have the ability to reference it, and we can draw targets in the "inventory" location when displaying player inventory just like when viewing a location. As for keeping tack of what can/can't be in the inventory, I'm sure we can ignore that for now.
+
+Or maybe we shouldn't. Perhaps now it's time to figure out talking to characters and picking up items. Those are key game concepts we'll use. Perhaps a target/interactable has the ability to enter the inventory simply based on whether or not it has the "take" action. We'll also have to think through actions for interactables.
+
+I'm also still on the fence about what to call targets. It feels wrong but I also don't like "interactable". It's too long.
+
+I'm tempted to steal the conversation format that Morrowind used. We just display whatever the character just said, and list conversation topics that can be selected. Actually, this is exactly how displaying room descriptions and targets works atm.
+
+We may not want to hardcode every single "mode" the game can be in. I think I don't want to display the location description while having a conversation. We could probably just use the same updateable system we've used in other games here. Honestly we need to implement a system like that just so we have flexibility later on. Like if we want a section that simply narrates a bunch of text.
+
+Perhaps we should start by reworking our currently logic to use updateable nodes. Then we can write a conversation node.
