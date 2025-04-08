@@ -54,7 +54,6 @@ function location_create(name, description = "no description") {
 	var location = {
 		name,
 		description,
-		targets: [],
 	};
 	struct_set(global.locations, name, location);
 	return name;
