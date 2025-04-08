@@ -78,8 +78,44 @@ Or maybe we shouldn't. Perhaps now it's time to figure out talking to characters
 
 I'm also still on the fence about what to call targets. It feels wrong but I also don't like "interactable". It's too long.
 
-I'm tempted to steal the conversation format that Morrowind used. We just display whatever the character just said, and list conversation topics that can be selected. Actually, this is exactly how displaying room descriptions and targets works atm.
+I'm tempted to steal the conversation format that Morrowind used. We just display whatever the character just said, and list conversation topics that can be selected. Actually, this is exactly how displaying location descriptions and targets works atm.
 
 We may not want to hardcode every single "mode" the game can be in. I think I don't want to display the location description while having a conversation. We could probably just use the same updateable system we've used in other games here. Honestly we need to implement a system like that just so we have flexibility later on. Like if we want a section that simply narrates a bunch of text.
 
-Perhaps we should start by reworking our currently logic to use updateable nodes. Then we can write a conversation node.
+Perhaps we should start by reworking our current logic to use updateable nodes. Then we can write a conversation node.
+
+
+7th of April, 2025
+
+Tried reflecting more on the interface. I want the information the player interacts with the most to be center screen. So I'm considering placing descriptions for targets within a location in center/top of the screen, move the location description to left side, and then list the actual interaction options menu below. Since targets could vary for the same location depending on game state, this gives us a way to vary the descriptions displayed front and center. And I think it feels clearer to the player what's happening in the underlying game mechanics without breaking immersion (hopefully). Additionally I bet we could list movement options along with 
+targets, which I'm hoping will feel a little more organic. I mean, in a regular 3D action game, when you enter a room, you look around and decide what you want to do. It could be push a button, or read a piece of paper on a desk, talk to an NPC, or leave through a door you see. All these things are in the same sort of option space mentally, so I think it makes sense to list them in the same ui place.
+
+All of this has to be tested though.
+
+I'm a little worried about maintaining the compass layout we have right now. I do think keeping movement direction options consistent is important for good gameplay feel. So while most interactable options in a location could be listed in a regular list, I'm not sure how to incorporate movement options. We shouldn't remove the idea of just listing them in a regular list though. It's very possible that it'll feel totally natural, especially if we kept the same order all the time (North first, then West, East, and so on).
+
+Actually I've sort of convinced myself, let's try listing movement options in a regular list next.
+
+But there's something about target options that's bothering me. At the moment I'm considering displaying a description of everything, then listing the options. Here's an example:
+
+---------------------------------
+A small wooden table sits in the corner. And on top of it rests a single candle in a brass holder. Its flame is gentle. The glint of a key can be seen next to the candle. To the North you see a door. And to the West the wooden planks have fallen away revealing a stone wall with a hole small enough to crawl through.
+
+- table
+- candle
+- key
+- door (North)
+- hole (West)
+---------------------------------
+
+What I don't like about this, is we've sort of listed everything twice. For example if the player wanted to interact with the key they have to read the sentence describing the key first, then select the option at the bottom of the screen. I almost feel like they should interact with that sentence itself. If we were comitted to mouse controls we could have the player click on the word itself (not a bad idea actually, keep that in mind for the future). Maybe it makes more sense to insist on each interactable being a separate sentence? Something like this:
+
+---------------------------------
+- A small wooden table sits in the corner.
+- And on top of it rests a single candle in a brass holder. Its flame is gentle.
+- The glint of a key can be seen next to the candle.
+- To the North you see a door.
+- To the West the wooden planks have fallen away revealing a stone wall with a hole small enough to crawl through.
+---------------------------------
+
+Actually I hate that. I want to keep blocks of descriptive text. I think it keeps you in the story better, instead of looking like obvious game options. Let's go with the first option. Looking over that I wonder if we actually need the location description on the side. I bet we could just put it right there with the descriptions of targets. Maybe all we need to separate the description of the room and the targets is a new line? Should movement options be listed before or after targets? Does it matter?
