@@ -6,6 +6,7 @@ function game_mode_get_examine() {
 			}
 		},
 		draw: function() {
+			draw_location_description_boxed();
 			var location_name = game_location_get().name;
 			var target_choice = game_target_choice_get();
 			var target = location_get_targets(location_name)[target_choice];

@@ -27,6 +27,7 @@
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"build_world","path":"scripts/build_world/build_world.yy",},},
     {"id":{"name":"compass","path":"scripts/compass/compass.yy",},},
+    {"id":{"name":"draw_boxed_location_description","path":"scripts/draw_boxed_location_description/draw_boxed_location_description.yy",},},
     {"id":{"name":"draw_text_box","path":"scripts/draw_text_box/draw_text_box.yy",},},
     {"id":{"name":"game_mode_examine","path":"scripts/game_mode_examine/game_mode_examine.yy",},},
     {"id":{"name":"game_mode_move","path":"scripts/game_mode_move/game_mode_move.yy",},},

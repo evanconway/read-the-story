@@ -16,6 +16,7 @@ function game_mode_get_targets() {
 			}
 		},
 		draw: function() {
+			draw_location_description_boxed();
 			var targets = location_get_targets(game_location_get().name);
 			var target_choice = game_target_choice_get();
 			targets_menu_draw(display_get_gui_width() / 2, display_get_gui_height() * 0.7, targets, target_choice);

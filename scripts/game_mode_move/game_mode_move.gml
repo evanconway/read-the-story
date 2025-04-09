@@ -51,6 +51,7 @@ function game_mode_get_move() {
 			}
 		},
 		draw: function() {
+			draw_location_description_boxed();
 			movement_draw_options(
 				display_get_gui_width() / 2,
 				display_get_gui_height() * 0.8,

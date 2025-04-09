@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_boxed_location_description",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_boxed_location_description",
+  "parent":{
+    "name":"game",
+    "path":"folders/game.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
