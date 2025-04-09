@@ -20,6 +20,40 @@ function game_location_get() {
 	return global.game.location;
 }
 
+function game_location_get_connections_arr() {
+	var location_name = game_location_get().name;
+	var connections = global.location_connections[$ location_name];
+	var connection_keys = ds_map_keys_to_array(connections);
+	array_sort(connection_keys, function(a, b) {
+		var val_a = location_get_dir_sort_value(a);
+		var val_b = location_get_dir_sort_value(b);
+		return val_a - val_b;
+	});
+	var result = array_map(connection_keys, method({ connections }, function(key) {
+		var location_name = ds_map_find_value(connections, key);
+		return {
+			dir: key,
+			dir_string: $"{location_name} ({location_direction_to_string(key)})",
+			location_name
+		};
+	}));
+	return result;
+}
+
+/**
+ * Get the map of current location connections where key is direction and value is location.
+ *
+ * @return {Id.DsMap}
+ */
+function game_location_get_connections() {
+	var location_name = game_location_get().name;
+	return global.location_connections[$ location_name];
+}
+
+function game_location_get_targets() {
+	return location_get_targets(game_location_get().name);
+}
+
 function game_movement_choice_set(new_choice) {
 	global.game.movement_choice = new_choice;
 }

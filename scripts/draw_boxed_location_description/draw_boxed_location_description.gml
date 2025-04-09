@@ -1,21 +1,22 @@
-
-function draw_location_description_boxed() {
+function draw_location_description_boxed(x1, y1, x2, y2) {
 	draw_set_font(fnt_default);
 	draw_set_color(c_white);
 	draw_set_alpha(1);
 
 	draw_set_halign(fa_center);
 	draw_set_valign(fa_top);
-	draw_text(display_get_gui_width() / 2, 20, game_location_get().name);
-
+	
 	var gui_width = display_get_gui_width();
 	var gui_height = display_get_gui_height();
-	var description_width_pad = 0.3;
+	
+	draw_text(gui_width / 2, y1, game_location_get().name);
+
+	var description_width_pad = 0.2;
 	draw_text_box(
-		gui_width * description_width_pad,
-		gui_height * 0.1,
-		gui_width * (1 - description_width_pad),
-		gui_height * 0.55,
+		x1,
+		y1 + gui_height * 0.05,
+		x2,
+		y2,
 		game_location_get().description
 	);
 }

@@ -11,6 +11,61 @@ enum LOCATION_CONNECTION_DIR {
 	DOWN
 }
 
+function location_get_dir_sort_value(dir) {
+	var val = 0;
+	if (dir == LOCATION_CONNECTION_DIR.NORTHWEST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.NORTH) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.NORTHEAST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.WEST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.EAST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.SOUTHWEST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.SOUTH) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.SOUTHEAST) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.UP) {
+		return val;
+	} else {
+		val += 1;
+	}
+	if (dir == LOCATION_CONNECTION_DIR.DOWN) {
+		return val;
+	} else {
+		val += 1;
+	}
+	return -1;
+}
+
 function __get_reverse_location_connection_dir(location_dir) {
 	if (location_dir == LOCATION_CONNECTION_DIR.NORTH) return LOCATION_CONNECTION_DIR.SOUTH;
 	if (location_dir == LOCATION_CONNECTION_DIR.SOUTH) return LOCATION_CONNECTION_DIR.NORTH;

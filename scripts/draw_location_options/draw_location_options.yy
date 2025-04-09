@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_boxed_location_description",
+  "%Name":"draw_location_options",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_boxed_location_description",
+  "name":"draw_location_options",
   "parent":{
     "name":"draw",
     "path":"folders/game/draw.yy",
