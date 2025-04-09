@@ -119,3 +119,10 @@ What I don't like about this, is we've sort of listed everything twice. For exam
 ---------------------------------
 
 Actually I hate that. I want to keep blocks of descriptive text. I think it keeps you in the story better, instead of looking like obvious game options. Let's go with the first option. Looking over that I wonder if we actually need the location description on the side. I bet we could just put it right there with the descriptions of targets. Maybe all we need to separate the description of the room and the targets is a new line? Should movement options be listed before or after targets? Does it matter?
+
+
+8th of April, 2025
+
+Did some more reflecting. If we're willing to list movement options along with target options, and list the options separately from description, I think we can just keep coding. We make functions do get a string for each of those descriptions, and we'll just write all of them in the same draw function. It'll be easy to split this up later and draw things in separate locations on the screen if we want.
+
+Something to consider though, is how movement options are listed. In our example above we listed the directions as the object to interact with (door, hole), not the direction. But we only store the direction and name of location in a connection. We need to add this data somewhere. Though for a brief re-write let's just use the connection direction.

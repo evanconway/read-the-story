@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"read-the-story",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -9,12 +9,16 @@
     "name":"Default",
   },
   "defaultScriptType":1,
-  "Folders":[],
+  "Folders":[
+    {"$GMFolder":"","%Name":"game","folderPath":"folders/game.yy","name":"game","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"modes","folderPath":"folders/game/modes.yy","name":"modes","resourceType":"GMFolder","resourceVersion":"2.0",},
+  ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.0.190",
   },
   "name":"read-the-story",
   "resources":[
@@ -24,6 +28,9 @@
     {"id":{"name":"build_world","path":"scripts/build_world/build_world.yy",},},
     {"id":{"name":"compass","path":"scripts/compass/compass.yy",},},
     {"id":{"name":"draw_text_box","path":"scripts/draw_text_box/draw_text_box.yy",},},
+    {"id":{"name":"game_mode_examine","path":"scripts/game_mode_examine/game_mode_examine.yy",},},
+    {"id":{"name":"game_mode_move","path":"scripts/game_mode_move/game_mode_move.yy",},},
+    {"id":{"name":"game_mode_targets","path":"scripts/game_mode_targets/game_mode_targets.yy",},},
     {"id":{"name":"game","path":"scripts/game/game.yy",},},
     {"id":{"name":"Location","path":"scripts/Location/Location.yy",},},
     {"id":{"name":"movement","path":"scripts/movement/movement.yy",},},

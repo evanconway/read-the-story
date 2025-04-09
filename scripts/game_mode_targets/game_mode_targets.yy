@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"game",
+  "%Name":"game_mode_targets",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"game",
+  "name":"game_mode_targets",
   "parent":{
-    "name":"game",
-    "path":"folders/game.yy",
+    "name":"modes",
+    "path":"folders/game/modes.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
