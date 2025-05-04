@@ -123,6 +123,23 @@ Actually I hate that. I want to keep blocks of descriptive text. I think it keep
 
 8th of April, 2025
 
-Did some more reflecting. If we're willing to list movement options along with target options, and list the options separately from description, I think we can just keep coding. We make functions do get a string for each of those descriptions, and we'll just write all of them in the same draw function. It'll be easy to split this up later and draw things in separate locations on the screen if we want.
+Did some more reflecting. If we're willing to list movement options along with target options, and list the options separately from description, I think we can just keep coding. We make functions to get a string for each of those descriptions, and we'll just write all of them in the same draw function. It'll be easy to split this up later and draw things in separate locations on the screen if we want.
 
 Something to consider though, is how movement options are listed. In our example above we listed the directions as the object to interact with (door, hole), not the direction. But we only store the direction and name of location in a connection. We need to add this data somewhere. Though for a brief re-write let's just use the connection direction.
+
+
+3rd of May, 2025
+
+Second-guessing myself on movement again. Now I think there shouldn't even be directions as a hard coded concept. I think it's better to allow total freedom for connections to other cells. I now believe the whole world should just be a graph, where each area is a node with any number of connections between other nodes. I don't think there should be strict logic here. This means we won't (more like can't) worry about clarifying the direction as a concept in the option listing. But this does mean we'll have to be good with our descriptions of connections to other areas. Also, this means we'll have to use old-fashioned manual planning and work to create the maps.
+
+To restate and be clear, a minimap I think is crucial to this working. In-fact it's basically the mechanic that inspired revisiting this game concept. With just the visual of a map, the entire text genre is easy to get immersed in.
+
+Just had an idea for creating the map. We could add a reference to an area visual, a sprite, in the node itself. Then when rendering the map, we could use data from that node itself. I'm not sure how the position data should be stored though. It will probably have to be relative to some point.
+
+Let's revamp our vocabulary here. Instead of area, let's call them cells. We're stealing that word from TES games. A cell is the most specific location unit the game has. The player and all game entities will always be in some cell. Now, we'll call a collection of cells an area. For example: a building full of rooms is an area, and each room in that building is a cell. I think we'll consider something like a city an area as well because we'd use cells to implement roads, streets, small parks, and other similar locations within a city.
+
+Actually we might need to clarify this a bit more. We're basically figuring out when we stop showing connections between cells. For example, if the area map is showing all the cells of streets and parks in a city, we won't show the cells of the interior buildings. We'd probably show something in their place. But then, if we're outside the city, on the roads that travel up to it, we won't show the cells of the city, we'll show some generic icon probably. I understand the behavior I want, I'm just not sure how this should be implemented. 
+
+Ah, I just had an idea. Ultimately this only matters for drawing the map. So all that matters is whether or not we continue drawing cell shapes, or some other icon. Perhaps we could assign an area name to each cell, as well as an area icon. Then, when drawing the area map, we'll use some sort of graph traversal to visit and draw cell icons for each cell, but if that cell is not in the same area as the one the player is in, we instead draw the area icon of that cell. That icon could still have position data and such.
+
+I think that idea works, and easily encapulates everything we're trying to accomplish without requiring a more complex implementation.
