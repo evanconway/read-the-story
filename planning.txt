@@ -174,3 +174,14 @@ result of option select center screen (or maybe top center, whatever looks best)
 special key to move focus from options menu to sub-options menu for any given option
 
 I moved things around to where I described them. I haven't finished implementing the new focus logic, but I don't need to yet. I quickly learned I absolutely hate the look of the location description being on the top right. I immediately tune it out of my vision and mind. I'm starting to believe I'm wrong for insisting the cell description always be on screen. Let's try not drawing it for a while and see where that gets us.
+
+So this means the next step is to rework what happens when entering a room, and selecting an option. We don't currently have logic for setting new text.
+
+We'll have to rework how options are stored. Right now we make an array of strings from the room connections and the options within the cell. I think we should do something similar, but instead create option objects with a on_select callback of some kind, and other data. We can keep a "text to display" variable as the text which appears center screen. And these on_select callbacks will change that value.
+
+For sub-options, I wonder if the system should always have a sub-options array ready to display, and it just gets populated by the on_select callbacks. Or maybe this should be something more flexible in-case we want something weirder when an option is selected? Like maybe the main text should actually be like it's own updateable that can be given focus. Actually I kind of like that because it will be very flexible.
+
+Summary for next goal:
+create main text area which is actually its own udpateable object
+rework options so they have a on_select callback that changes main text area
+rework cell connection options so they work with this new system
