@@ -2,7 +2,7 @@
 
 The goal here is to make a text based game, but we're going to use Interactive Fiction as our base. First, we want to navigate rooms like normal, but we want the description to stay on the page. Let's start be creating locations, the ability to move between them, and descriptions for each room which will stay on the page.
 
-Just realized we need to think through how direction works. First, I really want this game to work with controller. IF games use a cardinal direciton system. It's very tempting to steal this, but I liked the idea of having more flexibility in my system. For example, what if we wanted to parallel hallways leading north from a room? Basically two NORTH exits? In this was a keyboard IF game we could just demand a specific prompt from the player. But if this needs to work with controller then we can't type specific text. Maybe we just add sub-connections on the same cardinal direction, and we ask the player which one they meant if there's more than one?
+Just realized we need to think through how direction works. First, I really want this game to work with controller. IF games use a cardinal direciton system. It's very tempting to steal this, but I liked the idea of having more flexibility in my system. For example, what if we wanted two parallel hallways leading north from a room? Basically two NORTH exits? In this was a keyboard IF game we could just demand a specific prompt from the player. But if this needs to work with controller then we can't type specific text. Maybe we just add sub-connections on the same cardinal direction, and we ask the player which one they meant if there's more than one?
 
 Maybe it's better to not overthink this. Let's hard to commit to the 4 cardinal directions and the intercardinal directions, as well as up and down. It's simple. The 8 cardinal directions already work on any directional input device, and I'm sure we can figure something out for up and down. So doing this, we need to specify the type of direction for any given connection in a location.
 
@@ -143,3 +143,32 @@ Actually we might need to clarify this a bit more. We're basically figuring out 
 Ah, I just had an idea. Ultimately this only matters for drawing the map. So all that matters is whether or not we continue drawing cell shapes, or some other icon. Perhaps we could assign an area name to each cell, as well as an area icon. Then, when drawing the area map, we'll use some sort of graph traversal to visit and draw cell icons for each cell, but if that cell is not in the same area as the one the player is in, we instead draw the area icon of that cell. That icon could still have position data and such.
 
 I think that idea works, and easily encapulates everything we're trying to accomplish without requiring a more complex implementation.
+
+
+4th of May, 2025
+
+Went back over my old notes. Originally I wanted to insist on standardized directions to keep things simple for controllers. But if we're just listing connections between cells I don't think it'll be an issue for controller navigation. So, let's abandon the need for a specified direction in cell connections.
+
+Also had an idea for how to handle drawing area maps. We could first draw the entire area, making sure to use outlines to clearly separate different cells. Then to create the cell images we just copy this map over and over, erasing everything except for 1 cell for each cell. That way we can ensure they all line up relative to each other properly.
+
+Something that might be worth considering is random generation. I'm very tempted to not touch this because A: I'm very inexperienced in it and B: I heavily doubt the game will feel compelling without hand crafted environments. But I could be wrong. Let's keep it in mind, especially since it'd be much easier to create lots of cells with some sort of generation system.
+
+Actually what we should do is make sure our underlying data structure for environments works well for hand-crafted or automatically generated. Perhaps the final project could be a mix.
+
+Realized I'm letting my mind race again about movement. I still agree with my previous decision to list cell connections along with interaction options. But each connection needs text for the listing as well as further elaboration text. Do we display the elaboration text when the user highlights the listing? Actually this relates to how we want interactions in general to work. I want to force players to press buttons to see further descriptions of things because I think it'll feel more immersive. But I could be completely wrong.
+
+Actually after opening up the code we have again, I definitely don't want descriptions to just appear when hoving over options. I think it looks crappy. They should only appear after some sort of interaction. Also I definitely want the most recent piece of text the player needs to read to be center of the screen. Maybe what's really throwing me off is cell descriptions. I want the description of a cell to be visible to the player so they always have a reference of what it looks like. But I think I also want that to be presented to the player in a special way when they enter a cell. Probably especially if it's the first time they've ever entered that area.
+
+It's very possible I'm overcomplicating all of this, and just creating an IF game that works with controller, and displays a mini-map would serve all my needs.
+
+Perhaps we should re-approach this as only displaying single chunks of text center screen, one at a time. Then we let the sides of the screen be the options. Maybe we should try just re-arranging the code we have now to do that. Though how will that work with options that require sub menus?
+
+There's more than enough screen space to display a list of options, and an entire column for sub-options, while still keeping the main chunk of text center-screen. We could also list sub-options below the main chunk of text. I'm not sure how I want the ability to de-select options to work though. Also I don't think I ever solved my cell-description confusion.
+
+Let's do our old trick of committing to a specific strategy, regardless of how good we think it is, just to keep code going. Let's make the area description display in a corner of the screen at all times. We'll just display "You enter <cell name>." in the main text area on entering a space. We'll display a list of options on the left side of the screen. Selecting one will immediately display elaborated text center-screen. I guess for now we're committing to the idea of "examine" on select. For now let's try listing sub-options below the main text after selection. Though I think our only functional option is "travel" for cell-connections at the moment. The only thing I'm not sure about is how focus should work with sub-options. What I mean there is, if you select an option with sub-options, is the focus now in the sub-option menu? Or should it stay in the options menu moving focus to the sub-menu requires a specific button press? I think I like that second option better. Like a hotkey with a "further actions" label or something.
+
+Ok I like it. To summarize:
+cell descriptions in top-right corner
+options vertically left side
+result of option select center screen (or maybe top center, whatever looks best)
+special key to move focus from options menu to sub-options menu for any given option
