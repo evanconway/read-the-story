@@ -10,6 +10,7 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"drawing","folderPath":"folders/drawing.yy","name":"drawing","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"game","folderPath":"folders/game.yy","name":"game","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"draw","folderPath":"folders/game/draw.yy","name":"draw","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"modes","folderPath":"folders/game/modes.yy","name":"modes","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -24,12 +25,14 @@
   "name":"read-the-story",
   "resources":[
     {"id":{"name":"fnt_default","path":"fonts/fnt_default/fnt_default.yy",},},
+    {"id":{"name":"obj_app_camera","path":"objects/obj_app_camera/obj_app_camera.yy",},},
     {"id":{"name":"obj_app","path":"objects/obj_app/obj_app.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"build_world","path":"scripts/build_world/build_world.yy",},},
     {"id":{"name":"compass","path":"scripts/compass/compass.yy",},},
     {"id":{"name":"draw_boxed_location_description","path":"scripts/draw_boxed_location_description/draw_boxed_location_description.yy",},},
     {"id":{"name":"draw_location_options","path":"scripts/draw_location_options/draw_location_options.yy",},},
+    {"id":{"name":"draw_text_box_bordered","path":"scripts/draw_text_box_bordered/draw_text_box_bordered.yy",},},
     {"id":{"name":"draw_text_box","path":"scripts/draw_text_box/draw_text_box.yy",},},
     {"id":{"name":"game_mode_all","path":"scripts/game_mode_all/game_mode_all.yy",},},
     {"id":{"name":"game_mode_examine","path":"scripts/game_mode_examine/game_mode_examine.yy",},},

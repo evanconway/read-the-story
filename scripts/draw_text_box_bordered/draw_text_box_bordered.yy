@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_text_box",
+  "%Name":"draw_text_box_bordered",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_text_box",
+  "name":"draw_text_box_bordered",
   "parent":{
     "name":"drawing",
     "path":"folders/drawing.yy",

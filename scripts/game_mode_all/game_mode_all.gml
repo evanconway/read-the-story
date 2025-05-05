@@ -31,15 +31,13 @@ function game_mode_get_all() {
 		draw: function() {								
 			var gui_width = display_get_gui_width();
 			var gui_height = display_get_gui_height();
-			var width_pad = 0.2;
-			draw_location_description_boxed(
-				gui_width * width_pad,
-				gui_height * 0.02,
-				gui_width * (1 - width_pad),
-				gui_height * 0.5
-			);
+			var cell_desc_pad = 0;
+			var cell_desc_width = gui_width * 0.3;
+			var draw_desc_x1 = gui_width - cell_desc_width - cell_desc_pad;
+			var draw_desc_y1 = cell_desc_pad;
+			draw_text_box(draw_desc_x1, draw_desc_y1, game_location_get().description, cell_desc_width);
 			draw_location_options_box(
-				gui_width * width_pad,
+				gui_width * 0.2,
 				gui_height * 0.55,
 				choice
 			);

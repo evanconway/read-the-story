@@ -12,7 +12,7 @@ function draw_location_description_boxed(x1, y1, x2, y2) {
 	draw_text(gui_width / 2, y1, game_location_get().name);
 
 	var description_width_pad = 0.2;
-	draw_text_box(
+	draw_text_box_bordered(
 		x1,
 		y1 + gui_height * 0.05,
 		x2,
