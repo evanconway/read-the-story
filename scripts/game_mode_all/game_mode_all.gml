@@ -36,7 +36,7 @@ function game_mode_get_all() {
 			var draw_desc_x1 = gui_width - cell_desc_width - cell_desc_pad;
 			var draw_desc_y1 = cell_desc_pad;
 			draw_set_halign(fa_left);
-			draw_text_box(draw_desc_x1, draw_desc_y1, game_location_get().description, cell_desc_width);
+			// draw_text_box(draw_desc_x1, draw_desc_y1, game_location_get().description, cell_desc_width);
 			draw_location_options_box(
 				0,
 				0,

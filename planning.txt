@@ -172,3 +172,5 @@ cell descriptions in top-right corner
 options vertically left side
 result of option select center screen (or maybe top center, whatever looks best)
 special key to move focus from options menu to sub-options menu for any given option
+
+I moved things around to where I described them. I haven't finished implementing the new focus logic, but I don't need to yet. I quickly learned I absolutely hate the look of the location description being on the top right. I immediately tune it out of my vision and mind. I'm starting to believe I'm wrong for insisting the cell description always be on screen. Let's try not drawing it for a while and see where that gets us.
