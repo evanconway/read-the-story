@@ -185,3 +185,12 @@ Summary for next goal:
 create main text area which is actually its own udpateable object
 rework options so they have a on_select callback that changes main text area
 rework cell connection options so they work with this new system
+
+
+6th of May, 2025
+
+As I implement my new system, I kind of hate all my old code. I think this is mostly due to not knowing how we want things to work. For example targets have multiple ways of getting their description.
+
+Also, Just from feel alone, I don't think the general idea for options here is going to work. It feels super lame to just select from a list of things. I think the game will just feel like menu navigation forever.
+
+We should keep pushing forward with our above plan, but be very aware of this issue.

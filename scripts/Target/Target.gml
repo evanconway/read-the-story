@@ -17,7 +17,7 @@ function target_create(name, description="") {
 	target_id_src += 1;
 	
 	target.get_description = method(target, function() {
-		return target_description;
+		return description;
 	});
 	
 	ds_map_add(global.targets, target.target_id, target);
