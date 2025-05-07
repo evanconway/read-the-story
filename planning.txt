@@ -35,7 +35,7 @@ I suppose we could also implement mouse support so mouse users can just click on
 
 In traditional IF games you can just type what you want to do, and I think the parsers are smart enough to figure out the target and action in one swoop. And in those games I suppose the commands can be more complex than a simple "target" -> "action". So for this game I guess the challenge is how to make it intiutive to interact with targets in the description.
 
-Will the game be too easy if all interactable game objects are just listed for the player undert "target" columns? Maybe, but I don't think I can know for sure until I try.
+Will the game be too easy if all interactable game objects are just listed for the player under "target" columns? Maybe, but I don't think I can know for sure until I try.
 
 Also just realized we could easily put a description for each item in unused screen space when we highlight it. Or maybe we want examining an object to be a deliberate action? Something to explore.
 
@@ -194,3 +194,27 @@ As I implement my new system, I kind of hate all my old code. I think this is mo
 Also, Just from feel alone, I don't think the general idea for options here is going to work. It feels super lame to just select from a list of things. I think the game will just feel like menu navigation forever.
 
 We should keep pushing forward with our above plan, but be very aware of this issue.
+
+
+7th of May, 2025
+
+Just throwing out an idea I had during the day. What if we change the layout of options based on the cell the player is in? Like if they're in a city staring down streets, does it make sense to have the names of people lines up on the side of the screen, like people walking down sides of the street? With names of building the player can enter behind the people? Or in a dungeon could object names be distributed around rooms as they actually would if standing there in that room?
+
+Also, it may be possible to still use some form of graphics for this, but it still depends heavily on text. What if we had a top down display with simple icons for navigating a space? We could even make the space heavily tile based so your character is only ever in a specific tile. Or perhaps we could just use actual boxes with text inside of them. Like a small box with "you" in the center for the player.
+
+Though would both these ideas we still have a main text area the player will read most of the game responses from. And I have to say using any sort of complex interface like I just described makes me nervoux because I think it'll feel like the true "game" is the graphical interface, and not the text. It really needs to feel like you're interacting with the giant text block itself.
+
+What if we created better tools for highlighting and interacting with a block of text, and simply used the center text as the list of options? Did I already have this idea and dismiss it? Let's re-examine. What if we saw this text on entering a cell:
+
+---
+The dark green carpet smushes as you enter the library.
+
+The two story walls are covered in shelves of books. Rows and columns of even more shelves fill the floor space. Dusty air fills your nose and sunlight from the tall arched windows warms your face. At the wooden desk near the entrance you came in from, the librarian looks up and adjusts her plain black-rimmed glasses at you. She puffs her old white bangs aside with a brief exhale and tuggs at her pink sweater before turning back down to her work.
+---
+
+Damn, writing is harder than I thought it was.
+Anyway. Now imagine that we could highlight words in this text. We could just use the control stick for changing row and column of text. Then once a word is highlight, activating it reveals action options. Or perhaps we go back to our old system of choosing action then target? For some reason that feels better for this.
+
+I do think we need to be able to further examine things listed there without removing the main block of text. For example, I want to be able to examine the "windows" and see a unique description of them without losing that original block of text. That way it's easy to examine elements in an area, or a description, without having to invoke some command that displays that original block of text again.
+
+I like this idea. But need to review it again when I'm more fresh.
