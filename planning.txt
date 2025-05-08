@@ -196,7 +196,7 @@ Also, Just from feel alone, I don't think the general idea for options here is g
 We should keep pushing forward with our above plan, but be very aware of this issue.
 
 
-7th of May, 2025
+7th of May, 2025 (am hours)
 
 Just throwing out an idea I had during the day. What if we change the layout of options based on the cell the player is in? Like if they're in a city staring down streets, does it make sense to have the names of people lines up on the side of the screen, like people walking down sides of the street? With names of building the player can enter behind the people? Or in a dungeon could object names be distributed around rooms as they actually would if standing there in that room?
 
@@ -213,8 +213,97 @@ The two story walls are covered in shelves of books. Rows and columns of even mo
 ---
 
 Damn, writing is harder than I thought it was.
-Anyway. Now imagine that we could highlight words in this text. We could just use the control stick for changing row and column of text. Then once a word is highlight, activating it reveals action options. Or perhaps we go back to our old system of choosing action then target? For some reason that feels better for this.
+Anyway. Now imagine that we could highlight words in this text. We could just use the control stick for changing row and column of text. Then once a word is highlighted, activating it reveals action options. Or perhaps we go back to our old system of choosing action then target? For some reason that feels better for this.
 
 I do think we need to be able to further examine things listed there without removing the main block of text. For example, I want to be able to examine the "windows" and see a unique description of them without losing that original block of text. That way it's easy to examine elements in an area, or a description, without having to invoke some command that displays that original block of text again.
 
 I like this idea. But need to review it again when I'm more fresh.
+
+
+7th of May, 2025 (evening)
+
+After some time away, I still like this idea. However I think this will take more time to implement than my other ideas. That's because each word in the text must be interactable. At least I'm pretty sure of this. I don't think there's anyway around the need for the code to know the location of each individual word. If we allow mouse clicking on words, we certainly need each word to have a "hurtbox" of sorts. If we use the controller to iterate over rows and words of text, we'll still need to know where the word is to highlight, underline, or somehow identify the word we've selected.
+
+The only thing I can think of that would still let us use the regular draw text function is to just not do anything to identify the word we're selecting and simply display it somewhere on the screen, and hope the user can feel out where their invisible cursor is within the text. 
+
+But that's dumb. We should figure out a system that let's us change the color/font/style of the selected word. Which I think also involves a system where we can identify what text is hovered by the mouse.
+
+Firstly, to be quite frank, I'm pretty sure we could just draw everything character individually for this. I think we can get away with that here because There will be no other graphics in this game. A super rough estimate is 1000 characters per page, which I'm sure is fine for drawing here.
+
+Actually... is it? Why don't we check this first.
+
+Ok, maybe we do want to optimize. Drawing 3000 individual characters on my machine yields a framerate of 500-600. This is dramatically lower than just drawing the same block of text at once. A shame our old text code never accounted for this. Let's start planning.
+
+There aren't any functions that will handle line breaks for us here, so we'll have to do that ourselves. This means we'll be drawing, at minimum, each row of text. So I bet we could design a system that only does complicated stuff with the row currently highlighted, and leaves all other alone.
+
+Though, since we're opening the gates to doing complicated text stuff, I really like the idea of introducing cool typing effects. Perhaps we want to create a variation of our other system where we keep an array of characters, but split up and re-connect individually drawn characters into entire strings once characters no longer need to be drawn separately for any reason. 
+
+In this case, I think it means we need to implement the same drawable system we used in our other code. A collections of drawables is a linked list of structs, each containing a string of text to draw, and style information for how to draw that text. These can be split apart and reconnected as needed. So in this system, each row will be at minimum 1 drawable (the entire row of text).
+
+Now... our old system included character index ranges for drawables. And there was an array of the original characters. Each entry in that array included the location and style of each character. In that system we used the first character index in a drawable as its anchor point. For example, look at the following data:
+
+// original text
+The quick brown fox jumps over the lazy dog.
+
+{
+    text: " over the lazy dog.",
+    char_index_start: 26,
+    char_index_end: 43,
+    style: {} // some object of style info
+}
+
+So in that case, we'd draw this drawable at whatever position is logged for character 26 in the original character array.
+
+We could easily create functions that split these drawables. We've already done it actually. Something I'm unsure about though is when is best to reconnect them. For this situation, it might actually be best to just rebuild everything at once. Or more accurately, create a new drawable containing the text of the entire row once it's been drawn. Let's commit to that strategy for now.
+
+Actually if we use this drawable strategy, I think we can put off creating typing effects. Like our old system, we could create an animator object which contains information about what has and hasn't been typed. And this object could apply splits, cuts, and style changes to the drawables. If we create the drawable system, with functions for making edits, we can worry about typing animation logic later. Let's do that.
+
+We need to plan out how word selection will work though... If we have the array of characters, each with position and size data, then we're already mostly there. But I like the idea of not iterating over the entire array of characters each frame. Could we just do each word? Once we've already parsed the text and created the character array, we could iterate over that again and create a word array using the same position data. That way we could have a function like this:
+
+get_word_at_xy(x, y)
+
+which works by just iterating over the word array and returning the first entry with position data that fits the given xy.
+
+I like the idea of a separate array for identifying words, but I'm concerned that limiting it to only words won't be a good idea in the long run. What if we want the subject the player interacts with to be multiple words? I think a likely scenario is a passage of text where the same word represents two important but very different targets. For example: a south door and a north door. If we want to go through the north door, I think the system should be able to highlight "north door" if we try to select just "door". Furthermore, we don't need position data for every word in a piece of text. We can skip over things like pronouns, indefinite articles, and other fancy such grammar jargon. So I think the system should be designed to only single out words if we tell it to.
+
+Wait, maybe we do need to allow for highlighting every word. Controllers will need to be able to move from word to word. I suppose we could highlight only the words/groups players can interact with. But I'm concerned this will cheapen the game? Crap, I'm not actually sure what's best here, which means we'll need to try different things.
+
+Well, luckily I think we can worry about that later, just so long as we solve how we create word groups that can be identified, and also we need to make sure we have a good way of actually rigging these words to game logic. Briefly I thought I might be able to simply add this feature to our old tag decorated text logic. However, I'm worried the idea of tying game logic to words goes a bit too far beyond the scope of that library. Or maybe will just end up feeling like a hack job.
+
+It's probably possible to add it in, but my gut says we should keep it separate. We should think next about how we'll actually construct a block of this interactable text. 
+
+Actually, this may be more straightforward than I thought. Firstly, if create a collection of words or word groups, those could be organized by row just like our drawables, which quickly solves how controllers navigate them. And tying game logic to these just means including a callback function for each word/group. Now as for handling individual words vs groups, I think what makes more sense to think about first is how we'll build these. I think we should have a function which accepts an array of text entries. Each entry contains text, and an optional callback function. Something like this:
+
+create_interactable_text([
+    "The quick ",
+    {
+        text: "brown fox"
+        callback: whatever
+    },
+    " jumps over the lazy ",
+    {
+        text: "dog",
+        callback: whatever
+    },
+    "."
+]);
+
+For entries without a callback specified, we could just auto parse it into words that just don't have a callback. But the ones that do will get parsed into groups, as we demonstrated above. We could still create a listing of individual words anyway though, and just assign that same callback to all words from a group. We can easily decide one vs the other during playtesting.
+
+But... looking over this now, I've realized something. That's going to be a huge pain to use for world creation. When I'm writing text, I want to be able to just write the text itself out, then apply callbacks later. Maybe we need to insist on connecting logic to words in a separate step:
+
+create_interactable_text({
+    text: "The quick brown fox jumps over the lazy dog",
+    interacts: [
+        {
+            text: "quick brown fox",
+            callback: whatever
+        },
+        {
+            text: "lazy dog",
+            callback: whatever
+        }
+    ]
+});
+
+Yeah, that's much better. Easier to write. What I think this means is we won't be able to create different logic for the same word in different context within the same text. Maybe that's ok?
