@@ -307,3 +307,185 @@ create_interactable_text({
 });
 
 Yeah, that's much better. Easier to write. What I think this means is we won't be able to create different logic for the same word in different context within the same text. Maybe that's ok?
+
+
+8th of May, 2025
+
+I've decided I'm going to make new text code instead of adding features to the old library. The reason is because the ability to select text feels like a feature outside the scope of the old code. We will be copying a lot of old logic but it's enough that it'll be more like a different library. Also, if we realize there's a better way to handle this while coding, we can feel free to really rip things apart.
+
+So with that said, I want to think more about how we'll match callback functions to words. You see, the text will ultimately end up as a data structure other than a string. I'm pretty sure I'll use an array of chars as a base, so that means we'll need to somehow get from a string like "quick brown fox" to a range of characters in the array. Actually, so long as we aren't adding/removing characters from the new data structure, we can just use the string_pos function. The return value of that function is the first character that will use the given callback, and we'll use the length of the string to determine the index of the last character.
+
+That's fine, so now we just need to think of how we'll handle the text highlighting, or knowing of subjects that are multiple words. To clarify, say we have this sentence:
+
+The quick brown fox jumps over the lazy dog.
+
+Now let's say the only words we want to have a callback for are "brown fox". Every other word should still be selectable, but if trying to highlight "fox" or "brown" it'll highlight both. Well... I'm not sure if we want it to highlight both just when hovering. But we do want it to highlight both when it's clicked on. So we should make sure the system can do either.
+
+I may want to avoid highlighting complex word groups because I think it'll make it too easy. The player should have to read and guess what to click on. At least I think so, but I'm not sure.
+
+Anyway, we need to think of how the words are stored so they can be navigated with controller, or selected by position. We'll at least need to store a collection of matched words so we have the data to highlight the matches on selection. 
+
+So, I think we have to start with the match words. We'll still have the array of characters. On text creation we'll iterate over the match word groups, identify all characters used by these, we'll create the data for the match words, and we'll add match-word data references to entries in the char array. Our data form might look like this:
+
+// char array entries:
+{
+    char: "a",
+    position: {
+        x: 617,
+        y: 433
+    },
+    size: {
+        width: 16,
+        height: 16,
+    },
+    style: {},
+    match_word: ref_or_null
+}
+
+// match word entry
+{
+    text: "quick brown fox",
+    char_index_start: 17,
+    char_index_end: 32,
+    position: // char at index 17s position
+    size: {
+        width: 240,
+        height: 16
+    }
+}
+
+With that information we have all the information we need to know if a mouse position is hovering it, as well as make a cut to the drawable.
+
+But now, what about all the words that don't have references? Here's my idea. We iterate over the entire char array again, but this time constructing more word objects, but only if the char array entires don't already contain match_word refs. Actually... now that I think about it, we need match_word refs for every char, because we need to be able to highlight a word for every char. It doesn't matter if there's data associated with it. So for our example, the sentence is:
+
+The quick brown fox jumps over the lazy dog.
+
+Let's say our only match word is "brown fox". We'll perform the logic we described above, so we'll have a match_word instance for "brown fox" (probably stored in an array), and all those chars will have references to this object. We'll then iterate over the char array again, constructing new match_refs for the found words:
+
+// after iterating over the first four characters:
+words = [
+    {
+        text: "the",
+        char_index_start: 1,
+        char_index_end: 3,
+        position: // char at index 1 position
+        size: {
+            width: 48,
+            height: 16
+        }
+    }
+]
+match_words = [
+    {
+        text: "brown fox",
+        char_index_start: 11,
+        char_index_end: 19,
+        position: // char at index 11 position
+        size: {
+            width: 128,
+            height: 16
+        }
+    }
+]
+
+// after 9 characters:
+words = [
+    {
+        text: "the",
+        char_index_start: 1,
+        char_index_end: 3,
+        position: // char at index 1 position
+        size: {
+            width: 48,
+            height: 16
+        }
+    },
+    {
+        text: "quick",
+        char_index_start: 5,
+        char_index_end: 9,
+        position: // char at index 5 position
+        size: {
+            width: 64,
+            height: 16
+        }
+    },
+]
+match_words = [
+    {
+        text: "brown fox",
+        char_index_start: 11,
+        char_index_end: 19,
+        position: // char at index 11 position
+        size: {
+            width: 128,
+            height: 16
+        }
+    }
+]
+
+But when we reach a character that already has a match_ref, we'll add that same match_ref to our words array, and skip our parsing index ahead according to the data in the match ref:
+
+// after reaching character 11, adding existing matching ref, and jumping index ahead
+words = [
+    {
+        text: "the",
+        char_index_start: 1,
+        char_index_end: 3,
+        position: // char at index 1 position
+        size: {
+            width: 48,
+            height: 16
+        }
+    },
+    {
+        text: "quick",
+        char_index_start: 5,
+        char_index_end: 9,
+        position: // char at index 5 position
+        size: {
+            width: 64,
+            height: 16
+        }
+    },
+    {
+        text: "brown fox",
+        char_index_start: 11,
+        char_index_end: 19,
+        position: // char at index 11 position
+        size: {
+            width: 128,
+            height: 16
+        }
+    }
+]
+match_words = [
+    {
+        text: "brown fox",
+        char_index_start: 11,
+        char_index_end: 19,
+        position: // char at index 11 position
+        size: {
+            width: 128,
+            height: 16
+        }
+    }
+]
+
+See how now we have an array of words, and each contains references to chars in the array, and all contain data to make drawable cuts. I also noticed there's a path here to highlighting only individual words, but allow for group selection. 
+
+(I should clarify again, when I say word highlight but group selection, I mean you could hover over the word "brown" and only "brown" would be highlighted, but when you clicked the words "brown fox" would be highlighted together and selected, because they're all considered part of the same target)
+
+We use the same logic as before, but we don't insert the match_word when we run into a character that already has a word reference. Instead we still create words, but we'll add the reference to the match_word to the word itself. This way we'll have all the position data for checking with mouse position on individual words, but still a reference to the word group.
+
+This plan is feeling stronger, but I just realized this system isn't that great for controller yet. The reason is we're going to want to navigate words by column and row, like a grid, but with inconsistent rows (because words aren't consistent). 
+
+(quick note, remember kerning must be disabled for our fonts our this system falls apart)
+
+First we'll need a way to know if we're navigating to a different row. Unfortunately I think this means we'll need to store words in separate arrays, each representing a row. Actually, this shouldn't be too bad given that the characters are already in separate rows. It may actually be very easy.
+
+That solves the idea of what row is selected by controller, but what about the word in the row? The thing is, words are organized by their physical space/size, not clear grid logic. So I don't think it makes sense to go down to the same index in the row when traversing between rows. Though maybe we should just start with that as it'll be easier to program. Actually, what we can do is infer the center point of the currently highlighted word, then using the same position logic we use for the mouse, find the word highlighted by that center x point in the newly selected row.
+
+That makes sense. Really the only logic issue is making sure we store word arrays in separate rows, which shouldn't be too bad.
+
+I think we have enough of a plan to start coding.
