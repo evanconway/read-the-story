@@ -489,3 +489,9 @@ That solves the idea of what row is selected by controller, but what about the w
 That makes sense. Really the only logic issue is making sure we store word arrays in separate rows, which shouldn't be too bad.
 
 I think we have enough of a plan to start coding.
+
+Note: I was looking at my old code for reference, the character array entries reference whatever drawable is drawing them. I can't remember why I did that, but there must have been a good reason.
+
+Another note: The last time we made line parsing code we used the concept of line indexes for determining y position of characters. I was going to avoid this since we won't have varying character sizes here. We won't be using different fonts mid-sentence and such. Except I'm wrong. According to a quick google the height of characters can vary within the same font. And, we may want to use sprites mid-text here as well. So we should use the line index strategy again.
+
+This logic is hard to think through. Later, let's try copying our previous code in, and removing the features we don't need.
