@@ -28,6 +28,30 @@ function InteractableText(text, width=800) constructor {
 	var char_x = 0;
 	var char_y = 0;
 	
+	static get_collection_word = function(word) {
+		var punc = [".", ",", "?", "!", "-", ";", ":", "/", "\""];
+		var result = { word: "", x: 0, y: 0, width: 0 };
+		var index_start = word.index_start;
+		var index_end = word.index_end;
+		
+		// adjust word start/end to exclude punctuation
+		while (array_contains(punc, char_array[index_start].character) && index_start <= index_end) index_start += 1;
+		while (array_contains(punc, char_array[index_end].character) && index_start <= index_end) index_end -= 1;
+		if (index_start > index_end) return undefined;
+		var text = "";
+		var width = 0;
+		for (var i = index_start; i <= index_end; i++) {
+			text += char_array[i].character;
+			width += char_array[i].width;
+		}
+		return {
+			word: text,
+			x: char_array[index_start].x,
+			y: char_array[index_start].y,
+			width,
+		};
+	};
+	
 	for (var i = 0; i < chars_length; i++) {
 		// continue adding to existing word
 		if (char_array[i].character != " ") {
@@ -59,12 +83,7 @@ function InteractableText(text, width=800) constructor {
 			}
 			
 			// add word to collection
-			array_push(curr_word_row.words, {
-				word: curr_word.text,
-				x: char_array[curr_word.index_start].x,
-				y: char_array[curr_word.index_start].y,
-				width: curr_word.width,
-			});
+			array_push(curr_word_row.words, get_collection_word(curr_word));
 			// set row height for word collection
 			curr_word_row.height = max(curr_word_row.height, line_height);
 			
@@ -75,6 +94,8 @@ function InteractableText(text, width=800) constructor {
 			curr_word.index_end = i + 1;
 		}
 	}
+	
+	// build drawables
 	drawables = {
 		prev: undefined,
 		next: undefined,
@@ -113,7 +134,7 @@ function InteractableText(text, width=800) constructor {
 		}
 		char_array[i].drawable = curr_drawable;
 	}
-	show_debug_message("finished");
+	show_debug_message("interactable text complete \n");
 }
 
 function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
