@@ -137,9 +137,13 @@ function InteractableText(text, width=800) constructor {
 	show_debug_message("interactable text complete \n");
 }
 
+function interactable_text_highlight_clear(i_text) {
+	i_text.highlighted_word = undefined;
+}
+
 function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
+	 interactable_text_highlight_clear(i_text);
 	with (i_text) {
-		highlighted_word = undefined;
 		var row_index = array_find_index(words, method({ text_y, y}, function(row, row_index) {
 			var row_y = text_y + row.y;
 			var row_y_end = row_y + row.height;
