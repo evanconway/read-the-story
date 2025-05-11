@@ -50,6 +50,8 @@ function InteractableText(text, width=800) constructor {
 				char_x += char_adding.width;
 				line_width += char_adding.width;
 				line_height = max(line_height, char_adding.height);
+				
+				// later, this is where we'll have to add words for detection
 			}
 			// reset current word
 			curr_word.text = "";
@@ -59,6 +61,45 @@ function InteractableText(text, width=800) constructor {
 		}
 	}
 	show_debug_message("finished");
+	
+	// construct initial drawables
+	drawables = {
+		previous: undefined,
+		next: undefined,
+		index_start: 0,
+		index_end: 0, // inclusive
+		text: char_array[0].character,
+		style: {
+			alpha: 1,
+			color: c_white,
+		},
+	}
+	var curr_drawable = drawables;
+	var curr_y = char_array[0].y; // using y position like line_index to determine if chars can be part of same drawable
+	
+	for (var i = 1; i < array_length(char_array); i++) {
+		if (char_array[i].y == curr_y) {
+			// char on same line
+			curr_drawable.index_end = i;
+			curr_drawable.text += char_array[i].character;
+		} else {
+			var new_drawable = {
+				previous: curr_drawable,
+				next: undefined,
+				index_start: i,
+				index_end: i, // inclusive
+				text: char_array[i].character,
+				style: {
+					alpha: 1,
+					color: c_white,
+				},
+			}
+			curr_y = char_array[i].y;
+			curr_drawable.next = new_drawable;
+			curr_drawable = new_drawable;
+		}
+	}
+	
 }
 
 function interactable_text_draw(i_text) {
@@ -68,9 +109,11 @@ function interactable_text_draw(i_text) {
 		draw_set_color(c_white);
 		draw_set_valign(fa_top);
 		draw_set_halign(fa_left);
-		for (var i = 0; i < array_length(char_array); i++) {
-			var char = char_array[i];
-			draw_text(char.x, char.y, char.character);
+		var drawable = drawables;
+		while (drawable != undefined) {
+			var anchor_char = char_array[drawable.index_start];
+			draw_text(anchor_char.x, anchor_char.y, drawable.text);
+			drawable = drawable.next
 		}
 	}
 }

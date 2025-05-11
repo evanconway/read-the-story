@@ -500,3 +500,5 @@ This logic is hard to think through. Later, let's try copying our previous code 
 11th of May, 2025
 
 It bothers me that I can't think through the line break parsing on my own, so I've been trying to redo it from the ground up. At the moment I'm struggling with whether or not to still use line-indexes. At first I thought I needed to use them, them I realized I probably don't. But now I'm realizing I probably want to so that I can more easily determine the width of lines for drawing center or right aligned text. But, maybe we can just use the y position of characters as a line index? Let's try that and see where it gets us.
+
+Looks like we've got it line breaking. Next let's add the concept of drawables. We won't be able to modify them yet. We'll just add a basic drawable per-line so that we've got somewhere to go from.
