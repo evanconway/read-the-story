@@ -9,6 +9,9 @@ test_text = new InteractableText(ishmael);
 updateable = {
 	update: function() {},
 	draw: method({ test_text }, function() {
-		interactable_text_draw(test_text);
+		draw_text(0, 0, $"({mouse_x}, {mouse_y})");
+		var text_pos = { x: 100, y: 100};
+		interactable_text_highlight_word_at_xy(test_text, text_pos.x, text_pos.y, mouse_x, mouse_y);
+		interactable_text_draw(test_text, text_pos.x, text_pos.y);
 	}),
 };

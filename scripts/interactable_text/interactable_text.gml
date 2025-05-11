@@ -14,6 +14,9 @@ function InteractableText(text, width=800) constructor {
 		};
 	}));
 	
+	var curr_word_row = { y: 0, height: 0, words: [] };
+	words = [curr_word_row];
+	highlighted_word = undefined;
 	var curr_word = {
 		text: "", // just for debugging
 		width: 0,
@@ -41,6 +44,8 @@ function InteractableText(text, width=800) constructor {
 				char_x = 0;
 				char_y += line_height;
 				line_height = 0;
+				curr_word_row = { y: char_y, height: 0, words: [] };
+				array_push(words, curr_word_row);
 			}
 			
 			// add to current line
@@ -51,9 +56,18 @@ function InteractableText(text, width=800) constructor {
 				char_x += char_adding.width;
 				line_width += char_adding.width;
 				line_height = max(line_height, char_adding.height);
-				
-				// later, this is where we'll have to add words for detection
 			}
+			
+			// add word to collection
+			array_push(curr_word_row.words, {
+				word: curr_word.text,
+				x: char_array[curr_word.index_start].x,
+				y: char_array[curr_word.index_start].y,
+				width: curr_word.width,
+			});
+			// set row height for word collection
+			curr_word_row.height = max(curr_word_row.height, line_height);
+			
 			// reset current word
 			curr_word.text = "";
 			curr_word.width = 0;
@@ -99,9 +113,30 @@ function InteractableText(text, width=800) constructor {
 		}
 		char_array[i].drawable = curr_drawable;
 	}
+	show_debug_message("finished");
 }
 
-function interactable_text_draw(i_text) {
+function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
+	with (i_text) {
+		highlighted_word = undefined;
+		var row_index = array_find_index(words, method({ text_y, y}, function(row, row_index) {
+			var row_y = text_y + row.y;
+			var row_y_end = row_y + row.height;
+			return y >= row_y && y < row_y_end;
+		}));
+		if (row_index < 0) return;
+		var row = words[row_index];
+		var word_index = array_find_index(row.words, method({ text_x, x }, function(word) {
+			var word_x = text_x + word.x;
+			var word_x_end = word_x + word.width;
+			return x >= word_x && x < word_x_end;
+		}));
+		if (word_index < 0) return;
+		highlighted_word = row.words[word_index];
+	}
+};
+
+function interactable_text_draw(i_text, x, y) {
 	with (i_text) {
 		draw_set_font(fnt_default);
 		draw_set_valign(fa_top);
@@ -111,8 +146,13 @@ function interactable_text_draw(i_text) {
 			var anchor_char = char_array[drawable.index_start];
 			draw_set_alpha(drawable.style.alpha);
 			draw_set_color(drawable.style.color);
-			draw_text(anchor_char.x, anchor_char.y, drawable.text);
+			draw_text(x + anchor_char.x, y + anchor_char.y, drawable.text);
 			drawable = drawable.next;
+		}
+		if (highlighted_word != undefined) {
+			draw_set_alpha(1);
+			draw_set_color(c_lime);
+			draw_text(x + highlighted_word.x, y + highlighted_word.y, highlighted_word.word);
 		}
 	}
 }
