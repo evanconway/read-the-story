@@ -1,4 +1,4 @@
-function InteractableText(text, width=800) constructor {
+function InteractableText(text, matches=[], width=800) constructor {
 	draw_set_font(fnt_default);
 	var chars_length = string_length(text);
 	// feather ignore GM1043
@@ -11,9 +11,26 @@ function InteractableText(text, width=800) constructor {
 			x: 0,
 			y: 0,
 			drawable: undefined,
+			match: undefined,
 		};
 	}));
 	
+	// rig matches with char_array
+	// match data shape: { text: string, callback: function }
+	for (var i = 0; i < array_length(matches); i++) {
+		var match = matches[i];
+		var pos_i = string_pos_ext(match.text, text, 1) - 1;
+		var pos_i_end = pos_i + string_length(match.text) - 1;
+		while (pos_i >= 0) {
+			for (var c = pos_i; c <= pos_i_end; c++) {
+				char_array[c].match = match;
+			}
+			pos_i = string_pos_ext(match.text, text, pos_i + 2) - 1;
+			pos_i_end = pos_i + string_length(match.text) - 1;
+		}
+	}
+	
+	// calculate line breaks and character positions
 	var curr_word_row = { y: 0, height: 0, words: [] };
 	words = [curr_word_row];
 	highlighted_word = undefined;
@@ -29,7 +46,7 @@ function InteractableText(text, width=800) constructor {
 	var char_y = 0;
 	
 	static get_collection_word = function(word) {
-		var punc = [".", ",", "?", "!", "-", ";", ":", "/", "\""];
+		var punc = [".", ",", "?", "!", ";", ":", "\""];
 		var result = { word: "", x: 0, y: 0, width: 0 };
 		var index_start = word.index_start;
 		var index_end = word.index_end;
@@ -46,6 +63,7 @@ function InteractableText(text, width=800) constructor {
 		}
 		return {
 			word: text,
+			index_start,
 			x: char_array[index_start].x,
 			y: char_array[index_start].y,
 			width,
@@ -160,6 +178,15 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
 		highlighted_word = row.words[word_index];
 	}
 };
+
+function interactable_text_highlight_invoke_callback(i_text) {
+	with (i_text) {
+		if (highlighted_word == undefined) return;
+		var match = char_array[highlighted_word.index_start].match;
+		if (match == undefined) return;
+		match.callback();
+	}
+}
 
 function interactable_text_draw(i_text, x, y) {
 	with (i_text) {
