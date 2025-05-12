@@ -521,4 +521,9 @@ I like this plan, let's try it.
 
 We were able to add the ability to define group highlighting in the match object itself. I think I originally planned on having it defined by the highlight function, but as I was coding I just ended up with it like this. Fortunately there's enough foundational logic underneath that it will be easy to change later. So let's leave it as-is for now.
 
+Now I think we can finally address highlighting text by key or button inputs. 
 
+Side-note: We'll have to address creating matches that over lap with one-another. Like "ancient city" and "city". But I think we can worry about that when it comes. We should be able to easily handle it by sorting matches and dealing with longer ones first, and ignoring smaller matches if a character already references a match.
+
+Since we already have 2D array of all words, we could easily slap in something that uses these values and indexes...
+Actually maybe we should just do that. I was thinking of all these strategies to handle moving up and down to the nearest word, but maybe we should start by keeping it simple.

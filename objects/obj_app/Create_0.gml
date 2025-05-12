@@ -20,16 +20,52 @@ test_text = new InteractableText(ishmael, [
 	},
 ]);
 
+
+
 updateable = {
-	update: method({ test_text }, function() {
-		if (mouse_check_button_pressed(mb_left)) {
-			interactable_text_highlight_invoke_callback(test_text);
+	using_mouse: false,
+	mouse_prev_position: {
+		x: mouse_x,
+		y: mouse_y,
+	},
+	test_text,
+	text_pos: { x: 100, y: 100},
+	update: function() {
+		if (mouse_x != mouse_prev_position.x || mouse_y != mouse_prev_position.y || mouse_check_button_pressed(mb_any)) {
+			using_mouse = true;
 		}
-	}),
-	draw: method({ test_text }, function() {
+		if (keyboard_check_pressed(vk_anykey)) {
+			using_mouse = false;
+		}
+		
+		if (using_mouse) {
+			interactable_text_highlight_word_at_xy(test_text, text_pos.x, text_pos.y, mouse_x, mouse_y);
+			if (mouse_check_button_pressed(mb_left)) {
+				interactable_text_highlight_invoke_callback(test_text);
+			}
+		} else {
+			if (keyboard_check_pressed(vk_up)) {
+				interactable_text_highlight_word_row_prev(test_text);
+			}
+			if (keyboard_check_pressed(vk_down)) {
+				interactable_text_highlight_word_row_next(test_text);
+			}
+			if (keyboard_check_pressed(vk_left)) {
+				interactable_text_highlight_word_col_prev(test_text);
+			}
+			if (keyboard_check_pressed(vk_right)) {
+				interactable_text_highlight_word_col_next(test_text);
+			}
+			if (keyboard_check_pressed(vk_enter)) {
+				interactable_text_highlight_invoke_callback(test_text);
+			}
+		}
+		
+		mouse_prev_position.x = mouse_x;
+		mouse_prev_position.y = mouse_y;
+	},
+	draw: function() {
 		draw_text(0, 0, $"({mouse_x}, {mouse_y})");
-		var text_pos = { x: 100, y: 100};
-		interactable_text_highlight_word_at_xy(test_text, text_pos.x, text_pos.y, mouse_x, mouse_y);
 		interactable_text_draw(test_text, text_pos.x, text_pos.y);
-	}),
+	},
 };

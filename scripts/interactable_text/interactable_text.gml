@@ -36,10 +36,19 @@ function InteractableText(text, matches=[], width=800) constructor {
 		}
 	}
 	
-	// calculate line breaks and character positions
+	// setup word highlight logic
 	var curr_word_row = { y: 0, height: 0, words: [] };
 	words = [curr_word_row];
-	highlighted_word = undefined;
+	highlighted_row = -1;
+	highlighted_column = -1;
+	static get_highlighted_word = function() {
+		if (highlighted_row < 0 || highlighted_row >= array_length(words)) return undefined;
+		var words_row = words[highlighted_row].words;
+		if (highlighted_column < 0 || highlighted_column >= array_length(words_row)) return undefined;
+		return words_row[highlighted_column];
+	};
+	
+	// calculate line breaks and character positions
 	var curr_word = {
 		text: "", // just for debugging
 		width: 0,
@@ -165,11 +174,13 @@ function InteractableText(text, matches=[], width=800) constructor {
 		}
 		char_array[i].drawable = curr_drawable;
 	}
+	
 	show_debug_message("interactable text complete \n");
 }
 
 function interactable_text_highlight_clear(i_text) {
-	i_text.highlighted_word = undefined;
+	i_text.highlighted_row = -1;
+	i_text.highlighted_column = -1;
 }
 
 function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
@@ -188,12 +199,42 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
 			return x >= word_x && x < word_x_end;
 		}));
 		if (word_index < 0) return;
-		highlighted_word = row.words[word_index];
+		highlighted_row = row_index;
+		highlighted_column = word_index;
 	}
 };
 
+function interactable_text_highlight_word_row_prev(i_text) {
+	with (i_text) {
+		highlighted_row = clamp(highlighted_row - 1, 0, array_length(words) - 1);
+		highlighted_column = clamp(highlighted_column, 0, array_length(words[highlighted_row].words) - 1);
+	}
+}
+
+function interactable_text_highlight_word_row_next(i_text) {
+	with (i_text) {
+		highlighted_row = clamp(highlighted_row + 1, 0, array_length(words) - 1);
+		highlighted_column = clamp(highlighted_column, 0, array_length(words[highlighted_row].words) - 1);
+	}
+}
+
+function interactable_text_highlight_word_col_prev(i_text) {
+	with (i_text) {
+		highlighted_row = clamp(highlighted_row, 0, array_length(words) - 1);
+		highlighted_column = clamp(highlighted_column - 1, 0, array_length(words[highlighted_row].words) - 1);
+	}
+}
+
+function interactable_text_highlight_word_col_next(i_text) {
+	with (i_text) {
+		highlighted_row = clamp(highlighted_row, 0, array_length(words) - 1);
+		highlighted_column = clamp(highlighted_column + 1, 0, array_length(words[highlighted_row].words) - 1);
+	}
+}
+
 function interactable_text_highlight_invoke_callback(i_text) {
 	with (i_text) {
+		var highlighted_word = get_highlighted_word();
 		if (highlighted_word == undefined) return;
 		var match = char_array[highlighted_word.index_start].match;
 		if (match == undefined) return;
@@ -214,6 +255,7 @@ function interactable_text_draw(i_text, x, y) {
 			draw_text(x + anchor_char.x, y + anchor_char.y, drawable.text);
 			drawable = drawable.next;
 		}
+		var highlighted_word = get_highlighted_word();
 		if (highlighted_word != undefined) {
 			draw_set_alpha(1);
 			draw_set_color(c_lime);
