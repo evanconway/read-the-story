@@ -10,7 +10,14 @@ test_text = new InteractableText(ishmael, [
 		callback: function() {
 			show_debug_message("You clicked my name.");
 		}
-	}
+	},
+	{
+		text: "regulating the circulation",
+		callback: function() {
+			show_debug_message("Critical for good health.");
+		},
+		highlight_all: true,
+	},
 ]);
 
 updateable = {

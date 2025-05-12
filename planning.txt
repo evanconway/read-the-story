@@ -518,3 +518,7 @@ So, if we leave this as hovering 1 word at a time, but highlighting the entire w
 I've got an idea. What if we associated individual chars with word-groups as mentioned above. And we will still create individual words in a word collection, as it's programmed now. But then, when highlighting a word we can choose from the highlight function whether we highlight just the word, or the word-group. This gives us more flexibility in the long run. And this will be easy to do because we'll have access to both just the word and the word group due to words storing char indexes, and the char_array storing references to the matches. As for highlighting with the controller I have another idea. I think we should make a movement system that skips words until it's highlighting a new word. This does mean the highlight will have to be stored as data inside the interactable text object, but I think that's ok. This was we could once again make highlighting just the word or the group an option when adjusting the highlight.
 
 I like this plan, let's try it.
+
+We were able to add the ability to define group highlighting in the match object itself. I think I originally planned on having it defined by the highlight function, but as I was coding I just ended up with it like this. Fortunately there's enough foundational logic underneath that it will be easy to change later. So let's leave it as-is for now.
+
+

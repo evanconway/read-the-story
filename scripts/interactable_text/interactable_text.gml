@@ -21,9 +21,15 @@ function InteractableText(text, matches=[], width=800) constructor {
 		var match = matches[i];
 		var pos_i = string_pos_ext(match.text, text, 1) - 1;
 		var pos_i_end = pos_i + string_length(match.text) - 1;
+		var match_data = {
+			text: match.text,
+			callback: match.callback,
+			words: [], // filled later by line break logic
+			highlight_all: struct_exists(match, "highlight_all") ? match.highlight_all : false,
+		};
 		while (pos_i >= 0) {
 			for (var c = pos_i; c <= pos_i_end; c++) {
-				char_array[c].match = match;
+				char_array[c].match = match_data;
 			}
 			pos_i = string_pos_ext(match.text, text, pos_i + 2) - 1;
 			pos_i_end = pos_i + string_length(match.text) - 1;
@@ -101,7 +107,14 @@ function InteractableText(text, matches=[], width=800) constructor {
 			}
 			
 			// add word to collection
-			array_push(curr_word_row.words, get_collection_word(curr_word));
+			var collection_word = get_collection_word(curr_word);
+			array_push(curr_word_row.words, collection_word);
+			// add word to match reference at character
+			var match_data_at_char = char_array[collection_word.index_start].match;
+			if (match_data_at_char != undefined) {
+				array_push(match_data_at_char.words, collection_word);
+			}
+			
 			// set row height for word collection
 			curr_word_row.height = max(curr_word_row.height, line_height);
 			
@@ -204,7 +217,16 @@ function interactable_text_draw(i_text, x, y) {
 		if (highlighted_word != undefined) {
 			draw_set_alpha(1);
 			draw_set_color(c_lime);
-			draw_text(x + highlighted_word.x, y + highlighted_word.y, highlighted_word.word);
+			var match = char_array[highlighted_word.index_start].match;
+			if (match != undefined && match.highlight_all) {
+				for (var w = 0; w < array_length(match.words); w++) {
+					var word = match.words[w];
+					var anchor_char = char_array[word.index_start];
+					draw_text(x + anchor_char.x, y + anchor_char.y, word.word);
+				}
+			} else {
+				draw_text(x + highlighted_word.x, y + highlighted_word.y, highlighted_word.word);
+			}
 		}
 	}
 }
