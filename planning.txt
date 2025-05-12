@@ -527,3 +527,13 @@ Side-note: We'll have to address creating matches that over lap with one-another
 
 Since we already have 2D array of all words, we could easily slap in something that uses these values and indexes...
 Actually maybe we should just do that. I was thinking of all these strategies to handle moving up and down to the nearest word, but maybe we should start by keeping it simple.
+
+We've got something simple working now. But as I expected, the highlighted word jumps around too much when moving by row. So we need some sort of logic to ensure the highlighted word stays close to the already highlighted word in the previous row. Also this system does not accomodate group highlighted at all, but we'll worry about that later. To solve the highlight jumping around, I think we can highlight by position. We'll get the middle xy position of the current highlight, and highlighted the word at that same x position, but in the new row.
+
+Our basic strategy seems to work, but it's possible for the position to "miss", as in the word is exactly between two words in the next row, so the position we try to highlight is on a space. So nothing gets highlighted.
+
+Adding a small space buffer seems to help. It still misses in cases where the current line extends far beyond the text of the next. Let's hack in some edge-cases.
+
+We assumed the current column was at the end of the line when moving rows and the highlight missed, but I think this only works atm because we're using left aligned text, so on the left side (the start) the text will never miss. This might not work for center aligned text. Also, we're still running into cases where the text misses. I believe now it's when the text centers directly over punctuation. Let's try extending the buffer code so it keeps trying progressively larger buffers until something hits.
+
+The infinitely extending buffer strategy works. But I have to say I still don't like how this system feels when navigating. I'm considering completely redoing this. The reason is because it feels like the point I'm looking at when I move with my keys isn't followed by my current logic. What if we establish the middle of the current word as like a mouse cursor we move, and as we move up and down rows that middle point does not change. And so we're always highlighting the middle point of the word when we started changing rows. And it's only after changing column that we'll establish a new middle-point. Let's try it during our next dev session.

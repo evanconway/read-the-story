@@ -183,8 +183,8 @@ function interactable_text_highlight_clear(i_text) {
 	i_text.highlighted_column = -1;
 }
 
-function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
-	 interactable_text_highlight_clear(i_text);
+function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y, with_space_buffer = false) {
+	interactable_text_highlight_clear(i_text);
 	with (i_text) {
 		var row_index = array_find_index(words, method({ text_y, y}, function(row, row_index) {
 			var row_y = text_y + row.y;
@@ -193,12 +193,33 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
 		}));
 		if (row_index < 0) return;
 		var row = words[row_index];
-		var word_index = array_find_index(row.words, method({ text_x, x }, function(word) {
-			var word_x = text_x + word.x;
-			var word_x_end = word_x + word.width;
-			return x >= word_x && x < word_x_end;
-		}));
-		if (word_index < 0) return;
+		
+		// add a small buffer to account for spaces between words
+		var word_index = -1;
+		if (!with_space_buffer) {
+			word_index = array_find_index(row.words, method({ text_x, x }, function(word) {
+				var word_x = text_x + word.x;
+				var word_x_end = word_x + word.width;
+				return x >= word_x && x < word_x_end;
+			}));
+			if (word_index < 0) return;
+		} else {
+			var space_buffer = 0;
+			while (word_index < 0) {
+				word_index = array_find_index(row.words, method({ text_x, x, space_buffer }, function(word) {
+					var word_x = text_x + word.x;
+					var word_x_end = word_x + word.width;
+					return x >= (word_x - space_buffer) && x < (word_x_end + space_buffer);
+				}));
+				space_buffer += 1;
+				
+				// infinite cut-off, just in case
+				if (space_buffer > 500) {
+					show_debug_message("interactable_text_highlight_word_at_xy exceeded space_buffer cutoff");
+					return;
+				}
+			}
+		}
 		highlighted_row = row_index;
 		highlighted_column = word_index;
 	}
@@ -206,15 +227,47 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y) {
 
 function interactable_text_highlight_word_row_prev(i_text) {
 	with (i_text) {
+		if (highlighted_row == 0) return;
+		var word = get_highlighted_word();
+		if (word == undefined) {
+			highlighted_row = 0;
+			highlighted_column = 0;
+			return;
+		}
+		var word_mid_x = word.x + word.width/2;
+		var row_pre_change = highlighted_row;
 		highlighted_row = clamp(highlighted_row - 1, 0, array_length(words) - 1);
-		highlighted_column = clamp(highlighted_column, 0, array_length(words[highlighted_row].words) - 1);
+		var row_data = words[highlighted_row];
+		interactable_text_highlight_word_at_xy(self, 0, 0, word_mid_x, row_data.y, true);
+		
+		// handle over-hang
+		if (get_highlighted_word() == undefined) {
+			highlighted_row = row_pre_change - 1;
+			highlighted_column = array_length(words[highlighted_row].words) - 1;
+		}
 	}
 }
 
 function interactable_text_highlight_word_row_next(i_text) {
 	with (i_text) {
+		if (highlighted_row >= array_length(words)) return;
+		var word = get_highlighted_word();
+		if (word == undefined) {
+			highlighted_row = 0;
+			highlighted_column = 0;
+			return;
+		}
+		var word_mid_x = word.x + word.width/2;
+		var row_pre_change = highlighted_row;
 		highlighted_row = clamp(highlighted_row + 1, 0, array_length(words) - 1);
-		highlighted_column = clamp(highlighted_column, 0, array_length(words[highlighted_row].words) - 1);
+		var row_data = words[highlighted_row];
+		interactable_text_highlight_word_at_xy(self, 0, 0, word_mid_x, row_data.y, true);
+		
+		// handle over-hang
+		if (get_highlighted_word() == undefined) {
+			highlighted_row = row_pre_change + 1;
+			highlighted_column = array_length(words[highlighted_row].words) - 1;
+		}
 	}
 }
 
