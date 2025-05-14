@@ -200,7 +200,7 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y, wi
 			word_index = array_find_index(row.words, method({ text_x, x }, function(word) {
 				var word_x = text_x + word.x;
 				var word_x_end = word_x + word.width;
-				return x >= word_x && x < word_x_end;
+				return x > word_x && x < word_x_end;
 			}));
 			if (word_index < 0) return;
 		} else {
@@ -209,7 +209,7 @@ function interactable_text_highlight_word_at_xy(i_text, text_x, text_y, x, y, wi
 				word_index = array_find_index(row.words, method({ text_x, x, space_buffer }, function(word) {
 					var word_x = text_x + word.x;
 					var word_x_end = word_x + word.width;
-					return x >= (word_x - space_buffer) && x < (word_x_end + space_buffer);
+					return x > (word_x - space_buffer) && x < (word_x_end + space_buffer);
 				}));
 				space_buffer += 1;
 				

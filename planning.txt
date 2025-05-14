@@ -537,3 +537,12 @@ Adding a small space buffer seems to help. It still misses in cases where the cu
 We assumed the current column was at the end of the line when moving rows and the highlight missed, but I think this only works atm because we're using left aligned text, so on the left side (the start) the text will never miss. This might not work for center aligned text. Also, we're still running into cases where the text misses. I believe now it's when the text centers directly over punctuation. Let's try extending the buffer code so it keeps trying progressively larger buffers until something hits.
 
 The infinitely extending buffer strategy works. But I have to say I still don't like how this system feels when navigating. I'm considering completely redoing this. The reason is because it feels like the point I'm looking at when I move with my keys isn't followed by my current logic. What if we establish the middle of the current word as like a mouse cursor we move, and as we move up and down rows that middle point does not change. And so we're always highlighting the middle point of the word when we started changing rows. And it's only after changing column that we'll establish a new middle-point. Let's try it during our next dev session.
+
+
+13th of May, 2025
+
+I'm conficted about whether the key navigation is bad or not. I've decided against spending more time on it for now. I think the next big thing to handle is how moving works when highlighting a group of words, especially when there's a line break in the middle. For now I'm tempted to go with some sort of easy solution that just uses our existing logic, but uses the first word in the group as the anchor. So if you selected a group of words in a line break, moving up or down would act as if you had moved up or down from the first word in that group.
+
+Although... I wonder if our previous idea of maintaining x value between rows until the column is changed might work better. This way we could keep that logic and the word group changing would probably still feel intuitive. Then the only trick would be navigating by column. But for word groups the expected behavior is clear, you use the ends of the group to determine the next word. Also, I think we should add wrapping for column switching. Or stated another way, when hitting "next column" at the end of a row, the first word in the next row will be highlighted.
+
+Need to think about this more when my mind is fresh.

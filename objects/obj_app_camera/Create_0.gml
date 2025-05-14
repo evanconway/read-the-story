@@ -2,7 +2,7 @@ resolution = {
 	width: 1280,
 	height: 720
 };
-var scale = 2;
+var scale = 1;
 
 window_set_size(resolution.width * scale, resolution.height * scale);
 surface_resize(application_surface, resolution.width, resolution.height);
